@@ -641,7 +641,15 @@
         const graduationProjectNote = "تنويه: دي مجرد أمثلة، بس في الحقيقة احنا مهتمين أكتر نسمع استخداماتك وازاي الذكاء الاصطناعي قدر يساعدك في حياتك وشغلك ودراستك.";
 
         const lecturesData = [
-            { title: "الأسبوع 1", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 1", 
+                lectures: [
+                    { title: "محاضرة الأسبوع الأول", url: "https://t.me/c/3331953900/6/78" }
+                ], 
+                guides: [
+                    { title: "شرح الأسبوع الأول", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-1/" }
+                ] 
+            },
             { title: "الأسبوع 2", lectures: [], guides: [] },
             { title: "الأسبوع 3", lectures: [], guides: [] },
             { title: "الأسبوع 4", lectures: [], guides: [] },
@@ -658,7 +666,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = -1; // All weeks locked initially
+            const CURRENT_WEEK_INDEX = 0; // Week 1 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -886,7 +894,14 @@
 
         // TasksTab Component
         const tasksData = [
-            { title: "تاسكات الأسبوع 1", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 1", 
+                deadline: "18 أبريل 2026", 
+                tasks: [
+                    "ادخل على ChatGPT أو Gemini، واستخدم مساعد \"Prompt Mood\" عشان تصيغ أمر احترافي في مجالك. اضغط (Share Conversation) وشاركنا الرابط هنا في تاب التاسكات."
+                ],
+                note: "التحدي: ماتكتفيش بالرد الأول! كمل نقاش مع الذكاء الاصطناعي وعدل عليه لحد ما تطلع بمنتج احترافي (الفرصة لربح Google Pro!)."
+            },
             { title: "تاسكات الأسبوع 2", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 3", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 4", deadline: "", tasks: [] },
@@ -1024,7 +1039,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = -1; // All weeks locked initially
+            const CURRENT_WEEK_INDEX = 0; // Week 1 unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
@@ -1065,7 +1080,7 @@
 
             const overallProgress = totalTasksCount > 0 ? (totalCompletedTasks / totalTasksCount) * 100 : 0;
 
-            const reminderText = "تذكير مهم: إنجاز التاسكات هو أساس تثبيت المعلومة. لو واجهت أي تحدي، لا تتردد في التواصل معنا على جروب التليجرام أو عبر رسالة خاصة. دعمنا لك مستمر طوال الأسبوع! 💚";
+            const reminderText = "تذكير مهم: إنجاز التاسكات هو أساس تثبيت المعلومة. لو واجهت أي تحدي، لا تتردد في التواصل معنا على جروب التليجرام أو عبر رسالة خاصة. دعمنا لك مستمر طوال الأسبوع!";
 
             return (
                 <div className="space-y-6">
@@ -1077,6 +1092,14 @@
                         totalCount={totalTasksCount}
                         icon="clipboard-check"
                     />
+
+                    {/* رسالة تشجيعية للديدلاين */}
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-[--accent-green] rounded-lg p-4 flex items-center gap-3 shadow-sm transform transition-all hover:scale-[1.01]">
+                        <Icon name="heart" className="w-8 h-8 text-[--accent-green] flex-shrink-0 animate-pulse" />
+                        <p className="text-gray-800 dark:text-gray-200 font-bold leading-relaxed text-sm sm:text-base">
+                            الديدلاين مهم بس حتى لو أخرت، فـ احنا نحب نشوفك بتشاركنا محاولاتك عشان تكون Smarter With AI 💚
+                        </p>
+                    </div>
                     
                     {/* Active Channel Button - New Gradient Style */}
                     <div className="text-center">
