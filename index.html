@@ -21,7 +21,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
-        // Set theme on initial load to prevent FOUC (Flash of Unstyled Content)
+        // Set theme on initial load to prevent FOUC
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.classList.add('dark')
         } else {
@@ -257,7 +257,7 @@
     <script type="text/babel">
         const { useState, useEffect, useCallback, useRef, useMemo } = React;
 
-        // Icon Component - Optimized to prevent lag (Self-contained)
+        // Icon Component - Optimized to prevent lag (Isolated creation)
         const Icon = ({ name, className }) => {
             const wrapperRef = useRef(null);
 
@@ -519,26 +519,22 @@
                         <h3 className="page-title text-2xl sm:text-3xl font-bold mb-4 text-center">أهلاً بك في دبلومة Smarter With AI - الدفعة الرابعة!</h3>
                         <p className="text-center text-gray-700 dark:text-gray-700 mb-8">يسعدنا انضمامك إلينا في هذه الرحلة الشيقة لاستكشاف عالم الذكاء الاصطناعي وكيفية الاستفادة منه في حياتك اليومية والمهنية.</p>
                         
-                        {/* New Quick Links Section with Branded Buttons */}
                         <div className="mb-8 bg-gray-50 dark:bg-gray-100 p-4 rounded-xl border border-gray-200">
                              <h4 className="section-header text-xl font-bold mb-4 flex items-center justify-center gap-2">
                                 <Icon name="link" />
                                 <span>روابط الوصول السريع</span>
                              </h4>
                              <div className="flex flex-col gap-3">
-                                {/* Main Group Button - Green */}
                                 <a href="https://t.me/+D5qrN2SQSC8wNDU0" target="_blank" className="btn-brand-primary w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md">
                                     <Icon name="send" className="w-6 h-6" />
                                     <span>مجتمع التليجرام (المناقشة العامة)</span>
                                 </a>
 
-                                {/* WhatsApp Button */}
                                 <a href="https://chat.whatsapp.com/C68FsQh5eYM7YaKAXCk9vQ" target="_blank" className="w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md text-white bg-green-600 hover:bg-green-700 transition-all">
                                     <Icon name="message-circle" className="w-6 h-6" />
                                     <span>جروب الواتساب</span>
                                 </a>
 
-                                {/* Secondary Buttons Grid - Navy */}
                                 <div className="grid grid-cols-2 gap-3">
                                     <a href="https://t.me/c/3331953900/8" target="_blank" className="btn-brand-navy py-3 px-2 rounded-lg flex items-center justify-center gap-2 font-semibold text-sm sm:text-base shadow-sm">
                                         <Icon name="alert-circle" className="w-5 h-5" />
@@ -734,9 +730,7 @@
                     });
                 }
             });
-            const totalLecturesCount = total;
-            const totalCompletedLectures = completed;
-            const overallProgress = totalLecturesCount > 0 ? (totalCompletedLectures / totalLecturesCount) * 100 : 0;
+            const overallProgress = total > 0 ? (completed / total) * 100 : 0;
 
             const reminderText = "تذكير: نلتقي أسبوعيًا في بث مباشر (Live) يوم الجمعة الساعة 8 مساءً للمناقشة والتطبيق. لا تقلق إذا فاتك، فالتسجيل سيكون متاحًا يوم السبت بإذن الله.";
 
@@ -747,12 +741,11 @@
                      <GlobalProgressBar 
                         title="إجمالي تقدم المحاضرات"
                         progress={overallProgress}
-                        completedCount={totalCompletedLectures}
-                        totalCount={totalLecturesCount}
+                        completedCount={completed}
+                        totalCount={total}
                         icon="book-open-check"
                     />
 
-                    {/* Channel Button - New Gradient Style */}
                     <div className="text-center">
                          <a 
                             href="https://t.me/c/3331953900/6" 
@@ -764,7 +757,6 @@
                         </a>
                     </div>
 
-                    {/* New Notebook & Assistant Buttons */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-6">
                         <a href="https://notebooklm.google.com/notebook/7b7f75b1-77f6-4363-ada6-84c730d6bfc7" target="_blank" className="btn-brand-navy py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-all">
                             <Icon name="book" className="w-5 h-5 text-[--accent-green]" />
@@ -797,11 +789,11 @@
                                             {week.projectDetails ? (
                                                 <div className="bg-white dark:bg-slate-800 rounded-lg">
                                                     <h4 className="subsection-title flex items-center gap-2 mb-4"><Icon name="award" /> تفاصيل مشروع التخرج</h4>
-                                                    <div className="space-y-5 px-2">
+                                                    <div className="space-y-5 px-2 text-gray-700 dark:text-gray-300">
                                                         {week.projectDetails.map((section, idx) => (
                                                             <div key={idx}>
                                                                 <h5 className="font-bold text-lg text-[--accent-navy] dark:text-[--accent-green] mb-2">{section.title}</h5>
-                                                                <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                                                <ul className="list-disc list-inside space-y-1">
                                                                     {section.items.map((item, i) => (
                                                                         <li key={i} className="leading-relaxed">{item}</li>
                                                                     ))}
@@ -821,7 +813,7 @@
                                                     <div>
                                                         <h4 className="subsection-title flex items-center gap-2"><Icon name="play-circle" /> مشاهدة المحاضرات</h4>
                                                         {week.lectures && week.lectures.length > 0 ? (
-                                                            <ul className="space-y-2 mt-4">
+                                                            <ul className="space-y-2 mt-4 text-gray-800 dark:text-gray-200">
                                                                 {week.lectures.map((lecture, index) => {
                                                                     const lectureKey = `${week.title}-${lecture.title}`;
                                                                     const isCompleted = !!completedLectures[lectureKey];
@@ -846,7 +838,6 @@
                                                                                     target="_blank"
                                                                                     rel="noopener noreferrer"
                                                                                     className="bg-[--accent-navy] text-white text-sm px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 transition-all transform hover:scale-105 dark:bg-[--accent-green] dark:text-[--accent-navy] dark:font-semibold"
-                                                                                    aria-label={`Open lecture for ${lecture.title}`}
                                                                                 >
                                                                                     <Icon name="play-circle" className="w-4 h-4" />
                                                                                     <span>مشاهدة</span>
@@ -865,7 +856,7 @@
                                                         <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
                                                             <h4 className="subsection-title flex items-center gap-2"><Icon name="book-text" /> أدلة الأسبوع</h4>
                                                             {week.guides && week.guides.length > 0 ? (
-                                                                <ul className="space-y-2 mt-4">
+                                                                <ul className="space-y-2 mt-4 text-gray-800 dark:text-gray-200">
                                                                     {week.guides.map((guide, index) => (
                                                                         <li key={index}>
                                                                             <a href={guide.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors w-full">
@@ -883,7 +874,6 @@
                                                     )}
                                                 </>
                                             )}
-
                                         </div>
                                     ) : (
                                         <></>
@@ -893,17 +883,16 @@
                         })}
                     </div>
 
-                    {/* Lecture Availability Dropdown at the bottom */}
                     <Accordion
                         title="⏳ مدة إتاحة المحاضرات – مهم جدًا"
                         isOpen={isAvailabilityOpen}
                         onToggle={() => setAvailabilityOpen(!isAvailabilityOpen)}
                     >
-                        <div className="text-gray-700 dark:text-gray-700 space-y-2 leading-relaxed">
+                        <div className="text-gray-700 dark:text-gray-300 space-y-2 leading-relaxed">
                             <p>المحاضرات متاحة ليكم كلكم خلال مدة الدبلومة + 6 شهور بعدها.</p>
                             <p className="font-bold text-red-500">لكن…</p>
                             <p>
-                                اللي يخلّص <span className="font-bold text-[--accent-navy]">كل المحاضرات</span> + <span className="font-bold text-[--accent-navy]">كل التاسكات</span> + <span className="font-bold text-[--accent-navy]">مشروع التخرج</span>
+                                اللي يخلّص <span className="font-bold text-[--accent-navy] dark:text-white">كل المحاضرات</span> + <span className="font-bold text-[--accent-navy] dark:text-white">كل التاسكات</span> + <span className="font-bold text-[--accent-navy] dark:text-white">مشروع التخرج</span>
                                 <br />
                                 بنضمه لقناة خاصة فيها كل محاضرات الدبلومة مدي الحياة. 🎓
                             </p>
@@ -981,7 +970,7 @@
                     )}
 
                     {item.tasks.length > 0 ? (
-                        <ul className="space-y-4 pt-2">
+                        <ul className="space-y-4 pt-2 text-gray-800 dark:text-gray-200">
                             {item.tasks.map((taskObj, index) => {
                                 const isString = typeof taskObj === 'string';
                                 const taskText = isString ? taskObj : taskObj.text;
@@ -1000,18 +989,11 @@
                                             />
                                             <label 
                                                 htmlFor={`task-${item.title}-${index}`}
-                                                className={`flex-grow cursor-pointer leading-relaxed ${isCompleted ? 'line-through text-gray-500' : ''} ${taskText.includes("ضروري") ? 'font-semibold' : ''}`}
+                                                className={`flex-grow cursor-pointer leading-relaxed ${isCompleted ? 'line-through text-gray-500' : ''}`}
                                             >
                                                {taskText}
                                             </label>
                                         </div>
-                                        {!isString && taskObj.subItems && (
-                                            <ul className={`list-disc list-inside pr-10 text-gray-600 space-y-2 text-sm sm:text-base ${isCompleted ? 'line-through opacity-70' : ''}`}>
-                                                {taskObj.subItems.map((sub, idx) => (
-                                                    <li key={idx}>{sub}</li>
-                                                ))}
-                                            </ul>
-                                        )}
                                         {!isString && taskObj.details && (
                                             <div className={`pr-10 mt-2 space-y-5 ${isCompleted ? 'opacity-70' : ''}`}>
                                                 {taskObj.details.map((section, idx) => (
@@ -1044,29 +1026,14 @@
             );
         };
 
-        const LockedTaskCard = ({ title, setModalMessage }) => {
-            return (
-                <button 
-                    className="content-card p-6 rounded-lg shadow-md transition-all opacity-60 flex flex-col items-center justify-center text-center w-full hover:opacity-75"
-                    onClick={() => setModalMessage("سيتم إضافة هذا الأسبوع قريبًا بإذن الله.")}
-                >
-                    <Icon name="lock" className="w-12 h-12 text-gray-400 mb-4" />
-                    <h3 className="subsection-title text-xl sm:text-2xl font-bold !bg-gray-400 !text-white flex items-center gap-2">
-                        <span>{title}</span>
-                    </h3>
-                    <p className="text-gray-600 font-semibold">مغلق حاليًا</p>
-                </button>
-            );
-        };
-
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 0; // Week 1 unlocked
+            const CURRENT_WEEK_INDEX = 0;
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
                     return saved ? JSON.parse(saved) : {};
                 } catch (error) {
-                    console.error("Failed to parse task completion status from localStorage", error);
+                    console.error("Failed to parse tasks", error);
                     return {};
                 }
             });
@@ -1076,31 +1043,24 @@
             }, [completedTasks]);
 
             const handleToggleTask = (taskKey) => {
-                setCompletedTasks(prev => ({
-                    ...prev,
-                    [taskKey]: !prev[taskKey]
-                }));
+                setCompletedTasks(prev => ({ ...prev, [taskKey]: !prev[taskKey] }));
             };
 
-            const { totalTasksCount, totalCompletedTasks } = useMemo(() => {
-                let total = 0;
-                let completed = 0;
+            const { totalCount, completedCount } = useMemo(() => {
+                let total = 0, completed = 0;
                 tasksData.forEach((week, index) => {
                     if (index <= CURRENT_WEEK_INDEX) {
                         total += week.tasks.length;
                         week.tasks.forEach(task => {
-                            const taskText = typeof task === 'string' ? task : task.text;
-                            if (completedTasks[`${week.title}-${taskText}`]) {
-                                completed++;
-                            }
+                            const txt = typeof task === 'string' ? task : task.text;
+                            if (completedTasks[`${week.title}-${txt}`]) completed++;
                         });
                     }
                 });
-                return { totalTasksCount: total, totalCompletedTasks: completed };
+                return { totalCount: total, completedCount: completed };
             }, [completedTasks]);
 
-            const overallProgress = totalTasksCount > 0 ? (totalCompletedTasks / totalTasksCount) * 100 : 0;
-
+            const overallProgress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
             const reminderText = "تذكير مهم: إنجاز التاسكات هو أساس تثبيت المعلومة. لو واجهت أي تحدي، لا تتردد في التواصل معنا على جروب التليجرام أو عبر رسالة خاصة. دعمنا لك مستمر طوال الأسبوع!";
 
             return (
@@ -1109,12 +1069,11 @@
                     <GlobalProgressBar 
                         title="إجمالي تقدم التاسكات"
                         progress={overallProgress}
-                        completedCount={totalCompletedTasks}
-                        totalCount={totalTasksCount}
+                        completedCount={completedCount}
+                        totalCount={totalCount}
                         icon="clipboard-check"
                     />
 
-                    {/* Active Channel Button - New Gradient Style */}
                     <div className="text-center">
                          <a 
                             href="https://t.me/c/3331953900/4" 
@@ -1123,18 +1082,6 @@
                         >
                             <Icon name="send" className="w-5 h-5"/>
                             <span>رابط قناة التاسكات (تليجرام)</span>
-                        </a>
-                    </div>
-
-                    {/* Smarter Gifts Button */}
-                    <div className="text-center mt-4">
-                         <a 
-                            href="https://mahmoudtaru.github.io/Smarter-Gifts/" 
-                            target="_blank" 
-                            className="btn-brand-primary hover:opacity-90 font-medium rounded-lg text-lg px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2 shadow-md"
-                        >
-                            <Icon name="gift" className="w-5 h-5"/>
-                            <span>موقع المساعدين الشخصيين (Smarter Gifts)</span>
                         </a>
                     </div>
 
@@ -1153,7 +1100,6 @@
                         ))}
                     </div>
 
-                    {/* رسالة تشجيعية للديدلاين */}
                     <div className="bg-green-50 dark:bg-green-900/20 border border-[--accent-green] rounded-lg p-4 flex items-center gap-3 shadow-sm transform transition-all hover:scale-[1.01] mt-6">
                         <Icon name="heart" className="w-8 h-8 text-[--accent-green] flex-shrink-0 animate-pulse" />
                         <p className="text-gray-800 dark:text-gray-200 font-bold leading-relaxed text-sm sm:text-base">
@@ -1164,7 +1110,7 @@
             );
         };
 
-        // BonusTab Component
+        // BonusTab Component Data
         const toolsData = [
             { 
                 title: "استخدام يومي", 
@@ -1413,8 +1359,8 @@
                         "حدد للذكاء الاصطناعي ما إذا كنت تريده أن يصممها كـ (شرائح عرض جاهزة) أم كـ (كود برمجي)."
                     ]},
                     { title: "تطبيق الهوية البصرية (اللوجو والألوان):", text: "", steps: [
-                        <>إذا كنت تستخدم NotebookLM: قم بإنشاء ملف <span className="font-bold text-[--accent-green]">(Brand Guidelines)</span> يحتوي على ألوانك وارفع اللوجو كملف (Source) داخل النوت بوك ليتم اعتماده.</>,
-                        <>إذا كنت تستخدم Gamma أو وكلاء الذكاء الاصطناعي: يجب رفع اللوجو الخاص بك على موقع استضافة صور مجاني للحصول على رابط مباشر <span className="font-bold text-[--accent-green]">(Direct Link)</span>، ثم قم بوضع الرابط في البرومبت واطلب منه استخدام هذا الشعار في كل الشرائح.</>
+                        <>إذا كنت تستخدم NotebookLM: قم بإنشاء ملف <span className="font-bold text-[--accent-navy] dark:text-white">(Brand Guidelines)</span> يحتوي على ألوانك وارفع اللوجو كملف (Source) داخل النوت بوك ليتم اعتماده.</>,
+                        <>إذا كنت تستخدم Gamma أو وكلاء الذكاء الاصطناعي: يجب رفع اللوجو الخاص بك على موقع استضافة صور مجاني للحصول على رابط مباشر <span className="font-bold text-[--accent-navy] dark:text-white">(Direct Link)</span>، ثم قم بوضع الرابط في البرومبت واطلب منه استخدام هذا الشعار في كل الشرائح.</>
                     ]}
                 ],
                 toolsList: ["NotebookLM", "Gamma", "AI Agents (z.ai, Skywork, Genspark, Manus)"],
@@ -1652,9 +1598,10 @@
                     { title: "التصميم خطوة بخطوة:", text: <>ابدأ المحادثة برفع السكرين شوت أو الوصف النصي. تأكد من تفعيل <span className="font-bold text-[--accent-green]">بيئة العمل (Canvas)</span>.</> },
                     { title: "التعديل البصري:", text: "سيظهر الكود في شاشة، والتصميم المبدئي في شاشة أخرى. لا تكتب أكواداً لتعديل الموقع؛ بل استخدم البرومبت العادي، وسيقوم هو بتحديث الكود فوراً." },
                     { title: "الاستضافة والمشاركة:", text: "بعد الانتهاء، انسخ الكود النهائي وقم برفعه على منصة مجانية مثل GitHub لتحصل على رابط حقيقي للموقع." },
-                    { title: "بناء الإضافات والتطبيقات:", text: "يمكنك إضافة مسار لبناء إضافة على المتصفح (Chrome Extension) أو تطبيق على (Google AI Studio) من خلال ميزة Build، وسيوجهك الذكاء الاصطناعي خطوة بخطوة." }
+                    { title: "بناء الإضافات والتطبيقات:", text: "يمكنك إضافة مسار لبناء إضافة على المتصفح (Chrome Extension) أو تطبيق على (Google AI Studio) من خلال ميزة Build، وسيوجهك الذكاء الاصطناعي خطوة بخطوة." },
+                    { title: "وكلاء الذكاء الاصطناعي والبرمجة المستقلة:", text: "استخدم وكلاء الذكاء الاصطناعي (AI Agents) أو Claude Code لبناء وتعديل التطبيقات بشكل شبه مستقل وبصلاحيات متقدمة." }
                 ],
-                toolsList: ["Gemini Canvas", "ChatGPT Canvas", "GitHub", "Google AI Studio"],
+                toolsList: ["Gemini Canvas", "ChatGPT Canvas", "GitHub", "Google AI Studio", "Claude Code", "AI Agents"],
                 targetCategory: "وكلاء الذكاء الاصطناعي",
                 assistantsGroups: [
                     {
@@ -1836,7 +1783,7 @@
                 ],
                 methods: [
                     { title: "بناء الهوية الاستباقية:", text: "اجلس مع مستشار هويتك الشخصية. سيقوم بتحليل شخصيتك وتوجيهك خطوة بخطوة لبناء خطة محتوى تبرزك كخبير." },
-                    { title: "البورتفوليو:", text: "لا ترسل ملف PDF كـ CV. استخدم أدوات الذكاء الاصطناعي لتحويل بياناتك إلى موقع بورتفوليو تفاعلي ومبهر." },
+                    { title: "البورتفوليو:", text: <>لا ترسل ملف PDF كـ CV. استخدم أدوات الذكاء الاصطناعي لتحويل بياناتك إلى <span className="font-bold text-[--accent-green] text-white">موقع بورتفوليو تفاعلي</span> ومبهر.</> },
                     { title: "تحليل المنافسين:", text: "ارفع روابط حسابات منافسيك أو الخبراء في مجالك واطلب من المساعد تحليل استراتيجياتهم." }
                 ],
                 toolsList: ["النماذج اللغوية (Gemini, ChatGPT)", "أدوات Vibe Coding"],
@@ -1902,7 +1849,15 @@
                 ],
                 toolsList: ["NotebookLM"],
                 targetCategory: "إضافات NotebookLM",
-                assistantsGroups: [],
+                assistantsGroups: [
+                    {
+                        title: "المساعد المتخصص (NotebookLM Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/ac08e2d00ff7" }
+                        ]
+                    }
+                ],
                 tip: (
                     <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
                         <li>قوة NotebookLM لا تكمن فقط في التلخيص، بل في كونه <strong>مخاً ثانياً</strong> لك يربط كل مصادرك معاً.</li>
@@ -1984,7 +1939,6 @@
                 <div className="space-y-8">
                     <Reminder>{reminderText}</Reminder>
                     
-                    {/* Channel Button - New Gradient Style */}
                     <div className="text-center">
                          <a 
                             href="https://t.me/c/3331953900/11" 
@@ -1997,7 +1951,6 @@
                     </div>
 
                     <div className="space-y-4">
-                        
                         <Accordion 
                             title="أدوات الدبلومة (Smarter Tools)" 
                             isOpen={openAccordion === "smarter_tools"} 
@@ -2054,7 +2007,6 @@
                             />
                         </Accordion>
 
-                        {/* Workflows Accordion (الدليل العملي لمسارات الذكاء الاصطناعي) */}
                         <Accordion 
                             title="مسارات Workflows (الدليل المفصل)" 
                             isOpen={openAccordion === "workflows"} 
@@ -2074,8 +2026,6 @@
                                     onToggle={() => handleWorkflowToggle(workflow.id)}
                                 >
                                     <div className="space-y-5">
-                                        
-                                        {/* احتياجك */}
                                         <div className="bg-white dark:bg-slate-800 p-4 rounded-md border border-gray-200 dark:border-gray-700">
                                             <h5 className="font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                                                 <Icon name="target" className="w-5 h-5 text-gray-500 dark:text-gray-400"/> 
@@ -2086,7 +2036,6 @@
                                             </ul>
                                         </div>
 
-                                        {/* طرق التنفيذ */}
                                         <div className="mb-6">
                                             <h5 className="font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                                                 <Icon name="list" className="w-5 h-5 text-gray-500 dark:text-gray-400"/> 
@@ -2095,7 +2044,7 @@
                                             <div className="space-y-4 text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed pr-2">
                                                 {workflow.methods.map((method, i) => (
                                                     <div key={i}>
-                                                        <span className="font-bold text-gray-900 dark:text-gray-100">{method.title}</span>{' '}
+                                                        <span className="font-bold text-[--accent-green]">{method.title}</span>{' '}
                                                         <span>{method.text}</span>
                                                         {method.steps && (
                                                             <ul className="list-disc list-inside pr-4 space-y-2 mt-2">
@@ -2107,7 +2056,6 @@
                                             </div>
                                         </div>
 
-                                        {/* الأدوات وارتباط ببنك الأدوات */}
                                         <div className="bg-gray-50 dark:bg-slate-800/50 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border border-gray-200 dark:border-gray-700">
                                             <div className="flex items-center flex-wrap gap-2 text-sm sm:text-base w-full justify-between">
                                                  <div className="flex items-center gap-2">
@@ -2126,7 +2074,6 @@
                                             </div>
                                         </div>
 
-                                        {/* المساعدون */}
                                         {workflow.assistantsGroups && workflow.assistantsGroups.length > 0 && (
                                             <div className="mb-6">
                                                  <h5 className="font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2 text-base">
@@ -2157,9 +2104,8 @@
                                             </div>
                                         )}
 
-                                        {/* نصائح ذهبية */}
                                         {workflow.tip && (
-                                            <div className="bg-[#fffdf5] dark:bg-yellow-900/10 p-4 rounded-lg border border-[#fde08b] dark:border-yellow-700/50 flex items-start gap-3">
+                                            <div className="bg-[#fffdf5] dark:bg-yellow-900/10 p-4 rounded-lg border border-[#fde08b] dark:border-yellow-700/50 flex items-start gap-3 mt-6">
                                                  <Icon name="lightbulb" className="w-6 h-6 text-yellow-500 flex-shrink-0 mt-1"/>
                                                  <div className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed w-full">
                                                      <span className="font-bold text-gray-900 dark:text-white block mb-2">نصائح ذهبية:</span>
@@ -2167,12 +2113,10 @@
                                                  </div>
                                             </div>
                                         )}
-
                                     </div>
                                 </NestedAccordion>
                             ))}
                         </Accordion>
-                        
                     </div>
                     
                     <div>
@@ -2230,7 +2174,7 @@
                                         title="هشام مصطفي أكاديمي (دبلومات مدفوعة)"
                                         description="ميزة الدبلومة: سعر قليل، شامل، جروب متابعة وفيدباك."
                                     />
-                                    <div className="p-3 bg-gray-50 border-t">
+                                    <div className="p-3 bg-gray-50 border-t text-gray-800 dark:text-gray-200">
                                         <span className="font-semibold flex items-center gap-2"><Icon name="youtube" className="w-5 h-5" /> لو عاوز حاجة مجانية (يوتيوب):</span>
                                     </div>
                                     <RecommendationLink 
@@ -2264,14 +2208,14 @@
                                         title="ترشيحات مجانية ومدفوعة"
                                         description="بوست شامل لأفضل مصادر تعلم كتابة المحتوى"
                                     />
-                                    <div className="p-4 bg-green-50 border-t border-green-100">
+                                    <div className="p-4 bg-green-50 dark:bg-green-900/10 border-t border-green-100 dark:border-green-800">
                                         <h6 className="font-bold text-[--accent-green] mb-2 flex items-center gap-2">
                                             <Icon name="tag" className="w-4 h-4" />
                                             تنويه خاص لخريجين Smarter With AI:
                                         </h6>
-                                        <p className="text-sm text-gray-700 mb-3 leading-relaxed">
+                                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-3 leading-relaxed">
                                             متاح حالياً خصم <span className="font-bold">10%</span>.<br/>
-                                            استخدم الكود الخاص: <span className="font-mono font-bold bg-white px-2 py-0.5 rounded border border-gray-200 select-all">MH10</span><br/>
+                                            استخدم الكود الخاص: <span className="font-mono font-bold bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-700 select-all">MH10</span><br/>
                                             <span className="text-xs text-gray-500">* الكود متفعّل لمدة 3 شهور على جميع دبلومات OnTrack.</span>
                                         </p>
                                         <a 
@@ -2346,7 +2290,7 @@
                                         icon="map"
                                         title="خارطة الطريق لتعلمها"
                                     />
-                                    <div className="p-3 bg-gray-50 border-t">
+                                    <div className="p-3 bg-gray-50 dark:bg-slate-800/30 border-t text-gray-800 dark:text-gray-200">
                                         <div className="flex items-center gap-3">
                                             <Icon name="list-checks" className="w-5 h-5 text-[--accent-green] flex-shrink-0" />
                                             <span className="flex-grow font-semibold">أفضل مصادر مجانية لتعلم n8n (بدون برمجة):</span>
@@ -2364,7 +2308,6 @@
                                     />
                                 </div>
                             </NestedAccordion>
-
                         </Accordion>
 
                         <Accordion 
@@ -2378,16 +2321,16 @@
                                 isOpen={openNestedAccordion === "follow"}
                                 onToggle={() => handleNestedToggle("follow")}
                             >
-                                <div className="space-y-3 pt-2">
-                                    <a href="https://drive.google.com/file/d/1qeKaJ8vr8gmBNCR-QLTmLgqXJPcKhFcs/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-[--accent-green] flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50">
+                                <div className="space-y-3 pt-2 text-gray-800 dark:text-gray-200">
+                                    <a href="https://drive.google.com/file/d/1qeKaJ8vr8gmBNCR-QLTmLgqXJPcKhFcs/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-[--accent-green] flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10">
                                             <Icon name="youtube" className="w-5 h-5 text-red-600" />
                                             <span>يوتيوب</span>
                                     </a>
-                                    <a href="https://drive.google.com/file/d/1dtRwvwG4B3SqlFgEBxD1zLM8iRWlE8vX/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-[--accent-green] flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50">
+                                    <a href="https://drive.google.com/file/d/1dtRwvwG4B3SqlFgEBxD1zLM8iRWlE8vX/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-[--accent-green] flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10">
                                             <Icon name="facebook" className="w-5 h-5 text-blue-600" />
                                             <span>فيسبوك</span>
                                     </a>
-                                    <a href="https://drive.google.com/file/d/1lOOh_34fP9g8lsiYQtS8WGm1j59evVil/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-[--accent-green] flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50">
+                                    <a href="https://drive.google.com/file/d/1lOOh_34fP9g8lsiYQtS8WGm1j59evVil/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-[--accent-green] flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10">
                                             <Icon name="twitter" className="w-5 h-5 text-blue-400" />
                                             <span>تويتر (X)</span>
                                     </a>
@@ -2419,7 +2362,6 @@
                                     />
                                 </div>
                             </NestedAccordion>
-
                         </Accordion>
 
                         <Accordion 
@@ -2434,16 +2376,8 @@
                                 onToggle={() => handleNestedToggle("visual_general")}
                             >
                                 <div className="flex flex-col rounded-lg overflow-hidden border">
-                                    <RecommendationLink 
-                                        href="https://www.pinterest.com/"
-                                        icon="image"
-                                        title="Pinterest"
-                                    />
-                                    <RecommendationLink 
-                                        href="https://www.behance.net/"
-                                        icon="image"
-                                        title="Behance"
-                                    />
+                                    <RecommendationLink href="https://www.pinterest.com/" icon="image" title="Pinterest" />
+                                    <RecommendationLink href="https://www.behance.net/" icon="image" title="Behance" />
                                 </div>
                             </NestedAccordion>
 
@@ -2454,21 +2388,9 @@
                                 onToggle={() => handleNestedToggle("visual_landing")}
                             >
                                 <div className="flex flex-col rounded-lg overflow-hidden border">
-                                    <RecommendationLink 
-                                        href="https://dribbble.com/search/landing-page"
-                                        icon="layout-template"
-                                        title="Dribbble (Landing Pages)"
-                                    />
-                                    <RecommendationLink 
-                                        href="https://www.landingfolio.com/"
-                                        icon="layout-template"
-                                        title="Landingfolio"
-                                    />
-                                    <RecommendationLink 
-                                        href="https://www.landing.gallery/"
-                                        icon="layout-template"
-                                        title="Landing Gallery"
-                                    />
+                                    <RecommendationLink href="https://dribbble.com/search/landing-page" icon="layout-template" title="Dribbble (Landing Pages)" />
+                                    <RecommendationLink href="https://www.landingfolio.com/" icon="layout-template" title="Landingfolio" />
+                                    <RecommendationLink href="https://www.landing.gallery/" icon="layout-template" title="Landing Gallery" />
                                 </div>
                             </NestedAccordion>
                         </Accordion>
@@ -2479,36 +2401,12 @@
                             onToggle={() => handleToggle("video_downloaders")}
                         >
                             <div className="flex flex-col rounded-lg overflow-hidden border mb-4">
-                                <RecommendationLink 
-                                    href="https://ssyoutube.is/en1/"
-                                    icon="download"
-                                    title="ssYouTube (YouTube)"
-                                />
-                                <RecommendationLink 
-                                    href="https://cobalt.tools/"
-                                    icon="download"
-                                    title="Cobalt.tools (Facebook)"
-                                />
-                                <RecommendationLink 
-                                    href="https://snapinsta.to/en2"
-                                    icon="download"
-                                    title="Snapinsta (Instagram)"
-                                />
-                                <RecommendationLink 
-                                    href="https://twittervideodownloader.com/en/"
-                                    icon="download"
-                                    title="Twitter Video Downloader (Twitter/X)"
-                                />
-                                <RecommendationLink 
-                                    href="https://taplio.com/linkedin-video-downloader"
-                                    icon="download"
-                                    title="Taplio (LinkedIn)"
-                                />
-                                <RecommendationLink 
-                                    href="https://klickpin.com/"
-                                    icon="download"
-                                    title="Klickpin (Pinterest)"
-                                />
+                                <RecommendationLink href="https://ssyoutube.is/en1/" icon="download" title="ssYouTube (YouTube)" />
+                                <RecommendationLink href="https://cobalt.tools/" icon="download" title="Cobalt.tools (Facebook)" />
+                                <RecommendationLink href="https://snapinsta.to/en2" icon="download" title="Snapinsta (Instagram)" />
+                                <RecommendationLink href="https://twittervideodownloader.com/en/" icon="download" title="Twitter Video Downloader" />
+                                <RecommendationLink href="https://taplio.com/linkedin-video-downloader" icon="download" title="Taplio (LinkedIn)" />
+                                <RecommendationLink href="https://klickpin.com/" icon="download" title="Klickpin (Pinterest)" />
                             </div>
 
                             <NestedAccordion
@@ -2532,22 +2430,21 @@
                     <div className="content-card p-8 rounded-lg shadow-md max-w-2xl mx-auto text-center mt-6">
                         <Icon name="gift" className="w-16 h-16 mx-auto text-[--accent-green]" />
                         <h2 className="page-title text-2xl sm:text-3xl font-bold text-center my-4">شارك الدبلومة مع أحبابك!</h2>
-                        <p className="text-gray-700 mb-2">لأننا مبسوطين بوجودك معانا، نحب نشاركك الفرصة دي عشان أصحابك وحبايبك ينضموا لينا.</p>
-                        <p className="text-gray-700 font-semibold mb-6">احصل على كود دعوة خاص بيك يدي خصم يصل إلى 40% لأي حد من طرفك (تقدر تستخدمه مع 5 أشخاص).</p>
-                        <p className="text-gray-700 mb-8">خليك انت وحبايبك Smarter With AI! 💚</p>
-                        <a href="https://wa.me/201007964766" target="_blank" rel="noopener noreferrer" className="text-white bg-gradient-to-r from-[--accent-green] to-[--accent-navy] hover:opacity-90 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-lg w-full sm:w-auto px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2">
+                        <p className="text-gray-700 dark:text-gray-300 mb-2">لأننا مبسوطين بوجودك معانا، نحب نشاركك الفرصة دي عشان أصحابك وحبايبك ينضموا لينا.</p>
+                        <p className="text-gray-700 dark:text-gray-300 font-semibold mb-6">احصل على كود دعوة خاص بيك يدي خصم يصل إلى 40% لأي حد من طرفك (تقدر تستخدمه مع 5 أشخاص).</p>
+                        <a href="https://wa.me/201007964766" target="_blank" rel="noopener noreferrer" className="text-white bg-gradient-to-r from-[--accent-green] to-[--accent-navy] hover:opacity-90 font-medium rounded-lg text-lg w-full sm:w-auto px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2">
                             <Icon name="message-circle" />
                             <span>اطلب كود الدعوة الخاص بيك</span>
                         </a>
                     </div>
                     <div className="content-card p-8 rounded-lg shadow-md max-w-2xl mx-auto text-center">
                         <h2 className="page-title text-2xl sm:text-3xl font-bold text-center mb-6">نحن نهتم برأيك!</h2>
-                        <p className="text-center text-gray-700 mb-8">مشاركتك تساعدنا على تحسين وتطوير الدبلومة. اضغط على الزر أدناه لترك رأيك.</p>
+                        <p className="text-center text-gray-700 dark:text-gray-300 mb-8">مشاركتك تساعدنا على تحسين وتطوير الدبلومة. اضغط على الزر أدناه لترك رأيك.</p>
                         <a 
                             href="https://forms.gle/BFpPvB4yLQT8uQH66" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="text-white bg-gradient-to-r from-[--accent-green] to-[--accent-navy] hover:opacity-90 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-lg w-full sm:w-auto px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2"
+                            className="text-white bg-gradient-to-r from-[--accent-green] to-[--accent-navy] hover:opacity-90 font-medium rounded-lg text-lg w-full sm:w-auto px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2"
                         >
                             <Icon name="file-text" />
                             <span>شاركنا رأيك الآن</span>
@@ -2571,22 +2468,13 @@
             }, []);
 
             useEffect(() => {
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
+                if (theme === 'dark') document.documentElement.classList.add('dark');
+                else document.documentElement.classList.remove('dark');
                 localStorage.setItem('theme', theme);
             }, [theme]);
 
-            const handleThemeToggle = () => {
-                setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-            };
-
-            const handleTabChange = useCallback((tabId) => {
-                setActiveTab(tabId);
-                window.scrollTo(0, 0);
-            }, []);
+            const handleThemeToggle = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+            const handleTabChange = useCallback((tabId) => { setActiveTab(tabId); window.scrollTo(0, 0); }, []);
 
             const renderContent = () => {
                 switch (activeTab) {
@@ -2602,39 +2490,24 @@
             return (
                 <div id="app-content">
                     {modalMessage && (
-                        <div 
-                            className="fixed inset-0 bg-black/60 flex items-center justify-center z-[999] p-4" 
-                            onClick={() => setModalMessage(null)}
-                        >
-                            <div 
-                                className="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-sm" 
-                                onClick={(e) => e.stopPropagation()}
-                            >
+                        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[999] p-4" onClick={() => setModalMessage(null)}>
+                            <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg text-center w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
                                 <Icon name="lock" className="w-16 h-16 text-[--accent-green] mx-auto mb-4" />
-                                <h3 className="text-xl font-bold mb-2 text-gray-800">محتوى مغلق</h3>
-                                <p className="text-gray-700 mb-6">{modalMessage}</p>
-                                <button 
-                                    onClick={() => setModalMessage(null)} 
-                                    className="bg-gradient-to-r from-[--accent-green] to-[--accent-navy] text-white font-bold py-2 px-8 rounded-lg text-lg transition-all transform hover:scale-105"
-                                >
-                                    حسنًا
-                                </button>
+                                <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">محتوى مغلق</h3>
+                                <p className="text-gray-700 dark:text-gray-300 mb-6">{modalMessage}</p>
+                                <button onClick={() => setModalMessage(null)} className="bg-gradient-to-r from-[--accent-green] to-[--accent-navy] text-white font-bold py-2 px-8 rounded-lg text-lg transition-all transform hover:scale-105">حسنًا</button>
                             </div>
                         </div>
                     )}
-
                     <Header theme={theme} onThemeToggle={handleThemeToggle} />
                     <main className="container mx-auto p-4 md:p-8 pb-24">
-                        <div className="tab-content-anim">
-                            {renderContent()}
-                        </div>
+                        <div className="tab-content-anim">{renderContent()}</div>
                     </main>
                     <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
                 </div>
             );
         };
 
-        // Rendering
         const rootElement = document.getElementById('root');
         if (rootElement) {
             const root = ReactDOM.createRoot(rootElement);
@@ -2642,35 +2515,21 @@
         }
     </script>
     <script>
-        // Welcome Screen Logic
         function setupWelcomeScreen() {
             const welcomeScreen = document.getElementById('welcome-screen');
             const appContent = document.getElementById('root');
             const startBtn = document.getElementById('start-btn');
             const titleEl = document.getElementById('welcome-title');
             const subtitleEl = document.getElementById('welcome-subtitle');
-            
             const titleText = "Smarter With AI";
             const subtitleText = "مبسوطين إنك في الدبلومة معانا 💚";
 
             function applyTypewriter(element, text, speed, direction, callback) {
                 let i = 0; element.innerHTML = "";
-                
                 element.classList.add('typewriter-anim', (direction === 'ltr' ? 'typewriter-ltr' : 'typewriter-rtl'));
-                
                 function type() {
-                    if (i < text.length) { 
-                        element.innerHTML += text.charAt(i); 
-                        i++; 
-                        setTimeout(type, speed); 
-                    } else { 
-                        setTimeout(() => {
-                             element.classList.remove('typewriter-anim', 'typewriter-ltr', 'typewriter-rtl');
-                             element.style.borderRight = 'none'; 
-                             element.style.borderLeft = 'none';
-                            if (callback) callback();
-                        }, 500); 
-                    }
+                    if (i < text.length) { element.innerHTML += text.charAt(i); i++; setTimeout(type, speed); }
+                    else { setTimeout(() => { element.classList.remove('typewriter-anim', 'typewriter-ltr', 'typewriter-rtl'); if (callback) callback(); }, 500); }
                 }
                 type();
             }
@@ -2679,10 +2538,7 @@
                 applyTypewriter(titleEl, titleText, 100, 'ltr', () => {
                     setTimeout(() => {
                         applyTypewriter(subtitleEl, subtitleText, 75, 'rtl', () => {
-                            setTimeout(() => {
-                                startBtn.classList.remove('opacity-0');
-                                startBtn.classList.add('animate-fadeInUp', 'pulse-animate');
-                            }, 500);
+                            setTimeout(() => { startBtn.classList.remove('opacity-0'); startBtn.classList.add('animate-fadeInUp', 'pulse-animate'); }, 500);
                         });
                     }, 300);
                 });
@@ -2692,16 +2548,11 @@
                 welcomeScreen.classList.add('opacity-0');
                 setTimeout(() => {
                     welcomeScreen.style.display = 'none';
-                    if (appContent) {
-                       appContent.classList.remove('hidden'); 
-                    }
+                    if (appContent) appContent.classList.remove('hidden');
                 }, 700);
             });
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setupWelcomeScreen();
-        });
+        document.addEventListener('DOMContentLoaded', setupWelcomeScreen);
     </script>
 </body>
 </html>
