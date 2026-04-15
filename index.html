@@ -1026,6 +1026,21 @@
             );
         };
 
+        const LockedTaskCard = ({ title, setModalMessage }) => {
+            return (
+                <button 
+                    className="content-card p-6 rounded-lg shadow-md transition-all opacity-60 flex flex-col items-center justify-center text-center w-full hover:opacity-75"
+                    onClick={() => setModalMessage("سيتم إضافة هذا الأسبوع قريبًا بإذن الله.")}
+                >
+                    <Icon name="lock" className="w-12 h-12 text-gray-400 mb-4" />
+                    <h3 className="subsection-title text-xl sm:text-2xl font-bold !bg-gray-400 !text-white flex items-center gap-2">
+                        <span>{title}</span>
+                    </h3>
+                    <p className="text-gray-600 font-semibold">مغلق حاليًا</p>
+                </button>
+            );
+        };
+
         const TasksTab = ({ setModalMessage }) => {
             const CURRENT_WEEK_INDEX = 0;
             const [completedTasks, setCompletedTasks] = useState(() => {
@@ -1345,8 +1360,259 @@
                 )
             },
             {
+                id: "w7",
+                title: "3. مسار المذاكرة والتعلم الفائق (Guided Learning)",
+                icon: "graduation-cap",
+                needs: [
+                    "هل تريد المذاكرة من مصادرك الخاصة (مذكرات، محاضرات)؟",
+                    "أم تريد تعلم مهارة جديدة كلياً من الصفر؟"
+                ],
+                methods: [
+                    { title: "المذاكرة من مصادرك:", text: <>قم برفع كل محاضراتك إلى NotebookLM كقاعدة معرفية <span className="font-bold text-[--accent-green]">(Knowledge Base)</span>. اطلب منه توليد Flashcards أو كويزات سريعة.</> },
+                    { title: "تعلم مهارة جديدة:", text: <>المشكلة الكبرى هي أن النماذج تقوم بسرد المعلومات دفعة واحدة. الحل هو تفعيل وضع <span className="font-bold text-[--accent-green]">"المدرس الخصوصي"</span> (Guided Learning). أخبره: "أريد تعلم كذا، اسألني خطوة بخطوة، واختبر مستواي قبل الانتقال".</> }
+                ],
+                toolsList: ["NotebookLM", "Gemini", "ChatGPT"],
+                targetCategory: "تعلم فعال",
+                assistantsGroups: [
+                    {
+                        title: "المساعدون (GPTs) الأساسية:",
+                        links: [
+                            { name: "مساعد NotebookLM Mood", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
+                            { name: "مساعد Universal Primer للتعلم التدريجي", url: "https://chatgpt.com/g/g-GbLbctpPz-universal-primer" }
+                        ]
+                    },
+                    {
+                        title: "للتلخيص بأسلوب د. محمود حرب (Smarter Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f0f763bd24819192d82c0187cad244-smarter-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/2c3c6d25f368" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>في NotebookLM، استخدم خاصية <strong>(Learning Guide)</strong> لتحويل أي ملف معقد إلى دليل دراسي شامل بضغطة زر.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w_notebooklm",
+                title: "4. مسارات وتطبيقات NotebookLM المتقدمة",
+                icon: "notebook",
+                needs: [
+                    "كيف أستفيد من NotebookLM بشكل يومي في الكورسات، الحياة الشخصية، والشغل؟"
+                ],
+                methods: [
+                    { title: "المذاكرة والكورسات:", text: "اعمل نوت بوك للكورس اللي بتاخده حالياً أو اللي بتقدمه للناس لمساعدتك ومساعدة الطلبة على هضم المحتوى. واستخدم (الاستوديو) لعمل كويزات، فلاش كاردز، بريزنتيشن، انفوجرافيك، تقارير، شيت، بودكاست مختصر أو تفصيلي، وفيديوهات شرح." },
+                    { title: "المساعد الشخصي (دليل معرفي):", text: "ممكن تعمل مساعد شخصي يعتمد على النوت بوك للرد من القاعدة المعرفية، ولو بتعمل مساعد على أداة غير Gemini (مثل ChatGPT)، اطلب من النوت بوك \"دليل معرفي متكامل\" وارفعه كملف قاعدة معرفية (Knowledge base) للمساعد." },
+                    { title: "تجميع الداتا (الشغل والبيت):", text: "لتجميع داتا الشغل والإيرادات، أو داتا البيت وأرقام الصنايعية وكتالوجات الأجهزة، بحيث لو احتجت رقم أو حصل مشكلة في جهاز تستعين بها فوراً." },
+                    { title: "الريكوردات والأدلة:", text: "تحويل الريكوردات لاسكريبتات تفصيلية (بدون اشتراكات مدفوعة)، أو عمل كتيب/دليل متكامل من مصادر متفرقة (كتب، ريكوردات، ملفات، يوتيوب)." },
+                    { title: "الكتب الصوتية:", text: "تحويل الكتب لكتب صوتية: استخراج النص من الرواية فصل بفصل، ثم تحويله لصوت باختيار الشخصية وطريقة الإلقاء." }
+                ],
+                toolsList: ["NotebookLM"],
+                targetCategory: "إضافات NotebookLM",
+                assistantsGroups: [
+                    {
+                        title: "المساعد المتخصص (NotebookLM Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/ac08e2d00ff7" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>قوة NotebookLM لا تكمن فقط في التلخيص، بل في كونه <strong>مخاً ثانياً</strong> لك يربط كل مصادرك معاً.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w_projects",
+                title: "5. مسار إدارة المشاريع المتخصصة (Projects & Notebooks)",
+                icon: "folder-kanban",
+                needs: [
+                    "شغال فريلانس أو عندك مشروع معين وملفات وعاوز تعمل محادثات معزولة داخل المشروع؟"
+                ],
+                methods: [
+                    { title: "التجهيز مع المساعد:", text: <>اذهب للمساعد <span className="font-bold text-[--accent-green]">(Notebooks/ Projects Mood)</span> وأعطه فكرة عن المشروع، وكيف تريده أن يرد عليك، ثم ارفع مرفقات مشروعك ليديلك "التعليمات" التي ستضعها في بيئة المشروع ليلتزم بها النموذج.</> },
+                    { title: "الإنشاء والتطبيق:", text: "قم بإنشاء المشروع (Project) في Claude/ChatGPT أو (Notebook) في Gemini. ارفع المرفقات، وضع التعليمات المستخرجة." },
+                    { title: "الذاكرة المعزولة:", text: "تستطيع الآن تفعيل الذاكرة لهذه الجزئية فقط، بحيث يتذكر أي محادثات قمت بها داخل المشروع، وتفصلها تماماً عن الذاكرة الأساسية للنموذج بالخارج." }
+                ],
+                toolsList: ["ChatGPT Projects", "Claude Projects", "Gemini Gems", "NotebookLM"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "لتجهيز بيئة المشروع (Notebooks/ Projects Mood):",
+                        description: "مهندس معماري استباقي لتصميم مساحات العمل والمشاريع الاحترافية وتنقية مصادرها المعرفية بدقة.",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69df467c404c8191b083f7d85150947b-notebooks-projects-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/18_nwXjzEJvgGc0JMLxjuLMNGMDuW3LH2?usp=sharing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الفصل التام لبيئة المشروع يمنع الذكاء الاصطناعي من الخلط بين مهامك المختلفة أو تسريب أسلوب مشروع لآخر.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w9",
+                title: "6. مسار بيئة العمل وتحليل البيانات (Workspace & Office)",
+                icon: "briefcase",
+                needs: [
+                    "هل تستخدم تطبيقات Google (Docs, Forms, Sheets) لتنظيم عملك؟",
+                    "أم تعتمد بشكل كبير على برامج Microsoft Office (خاصة Excel و Word) للملفات الضخمة؟"
+                ],
+                methods: [
+                    { title: "Google Workspace:", text: "استخدم الذكاء الاصطناعي داخل Google Docs لإعادة صياغة التقارير، أو داخل Forms لتوليد كويزات واستبيانات. (ملاحظة: استخدام Gemini داخل بيئة Google Workspace يتطلب خطة مدفوعة)." },
+                    { title: "Microsoft Office (Excel & PowerPoint):", text: <>يمكنك تسطيب إضافة <span className="font-bold text-[--accent-green]">Claude</span> داخل برامج الأوفيس مباشرة (حتى على الخطة المجانية) لتحليل البيانات المعقدة وإنشاء العروض.</> }
+                ],
+                toolsList: ["Claude.ai", "Google Docs AI", "Google Forms AI"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "إضافات Claude الرسمية (Office):",
+                        links: [
+                            { name: "Claude for PowerPoint", url: "https://marketplace.microsoft.com/en-us/product/office/WA200010001?tab=Overview" },
+                            { name: "Claude for Excel", url: "https://marketplace.microsoft.com/en-us/product/saas/wa200009404?tab=overview" }
+                        ]
+                    },
+                    {
+                        title: "لإعادة تنظيم النصوص وهيكلتها (المنسق المحترف):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f50e7379b88191add70c6858cc7b6e-lmnsq-lmhtrf" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/a41d02a879cc" }
+                        ]
+                    },
+                    {
+                        title: "لتحليل البيانات الدقيقة:",
+                        links: [
+                            { name: "مساعد Data Analysis & Report AI (ChatGPT)", url: "https://chatgpt.com/g/g-2OebMtWeG-data-analysis-report-ai" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>استخدم <strong>Claude</strong> دائماً عندما يكون لديك ملف ضخم وتحتاج لمساعد قادر على قراءة السياق بالكامل دون ضياع معلومات.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w10",
+                title: "7. مسار المساعد الشخصي (Custom GPT / Gem)",
+                icon: "bot",
+                needs: [
+                    <>هل تريد بناء <span className="font-bold text-[--accent-green]">"مساعد شخصي دائم"</span> (Custom GPT) يقوم بمهمة محددة في عملك؟</>
+                ],
+                methods: [
+                    { title: "بناء الموظف الرقمي:", steps: [
+                        "تحدث أولاً مع (Gem Builder Mood) واشرح له فكرتك ليصيغ لك \"التعليمات الدقيقة\".",
+                        "افتح Explore GPTs في ChatGPT أو Gem Manager في Gemini، وقم بإنشاء مساعد جديد.",
+                        <>الخطوة الأهم: ارفع ملفات أعمالك السابقة في قسم <span className="font-bold text-[--accent-green]">القاعدة المعرفية (Knowledge Base)</span> ليعتمد عليها المساعد.</>
+                    ]}
+                ],
+                toolsList: ["ChatGPT (Explore GPTs)", "Gemini (Gem Manager)"],
+                targetCategory: "وكلاء الذكاء الاصطناعي",
+                assistantsGroups: [
+                    {
+                        title: "لتخطيط وبناء المساعدين (Gem Builder Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f3759786e48191b7ce1e7ca3f11158-gem-builder-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/98bb0d1cf7db" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الموظف الرقمي بدون <strong>"قاعدة معرفية"</strong> (ملفات PDF مرفوعة مسبقاً) هو مجرد محادثة عادية. قوة الموظف الرقمي تكمن في الملفات التي تدربه عليها.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w11",
+                title: "8. مسار العصف الذهني وتوليد الأفكار (Idea Generation)",
+                icon: "lightbulb",
+                needs: [
+                    "هل تعاني من \"قفلة الكاتب\" وتحتاج إلى أفكار جديدة لمحتواك؟",
+                    "هل تحتاج لمواكبة أحدث التريندات في السوق قبل البدء في التنفيذ؟",
+                    "هل تحتاج لتغذية بصرية أو فكرية لمشروعك؟"
+                ],
+                methods: [
+                    { title: "التغذية البصرية والفكرية:", steps: [
+                        <><strong>تغذية بصرية:</strong> تصفح منصات مثل Pinterest لجمع إلهام بصري لأفكارك.</>,
+                        <><strong>تغذية فكرية:</strong> استخدم النماذج اللغوية مثل (ChatGPT, Gemini, Claude) كمرافقين للعصف الذهني.</>
+                    ]},
+                    { title: "تحليل السوق واستخراج الأفكار:", text: <>قبل البدء في المحتوى، اجلس مع مساعد الأفكار. اطلب منه <span className="font-bold text-[--accent-green]">تحليل التريند الحالي</span> في مجالك داخل النطاق الجغرافي المستهدف.</> },
+                    { title: "جلسة العصف الذهني (Brainstorming):", text: "لا تطلب فكرة واحدة، بل اطلب منه توليد 10 أفكار بزوايا مختلفة لنفس الموضوع (زاوية كوميدية، زاوية علمية)، وتناقش معه لدمج الأفكار." }
+                ],
+                toolsList: ["Perplexity", "ChatGPT", "Gemini", "Claude", "Pinterest"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "للشريك الإبداعي وخبير التريندات (Idea Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d52f1c20f08191b93f39a825e55b7d-idea-mood-lshryk-lbd-y-wkhbyr-ltryndt" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1f7wGePE2WA_D5HUsG1I1OSj39j0hLqXg?usp=sharing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الفكرة القوية توفر نصف مجهود التنفيذ. اقضِ وقتاً كافياً في مسار توليد الأفكار لتضمن أن المحتوى الذي ستصنعه له جمهور يبحث عنه.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w12",
+                title: "9. مسار كتابة المحتوى والسرد القصصي (Content Writing & Storytelling)",
+                icon: "book-copy",
+                needs: [
+                    "هل تريد كتابة محتوى سوشيال ميديا (بوستات) أو مقالات احترافية؟",
+                    "هل تبحث عن كتابة اسكريبتات جذابة للفيديوهات؟",
+                    "هل تريد تحويل معلوماتك إلى قصة تلفت انتباه القارئ؟",
+                    "هل كتبت محتوى بالذكاء الاصطناعي وتحتاج لأنسنته (Humanize) أو تنسيقه؟"
+                ],
+                methods: [
+                    { title: "كتابة المحتوى والاسكريبتات:", text: "استخدم المساعدين لكتابة المنشورات أو مقالات المدونة. بالنسبة للفيديوهات، اطلب كتابة اسكريبت مقسم إلى مشهد (بصري) وتعليق (صوتي)." },
+                    { title: "تحويل المعلومات إلى قصص:", text: <>لا تنشر معلوماتك في شكل نقاط جافة. استخدم مساعد <span className="font-bold text-[--accent-green]">السرد القصصي (Storytelling)</span> ليصيغها في قالب يركز على المشكلة والحل.</> },
+                    { title: "تنسيق الكلام وأنسنته (Humanize):", text: <>أي نص آلي يحتوي على كلمات مبتذلة. ضعه في مساعد <span className="font-bold text-[--accent-green]">(AI Humanizer)</span> لإضافة لمسة بشرية حقيقية والتخلص من الأسلوب الروبوتي، ثم مرره على "المنسق المحترف" لضبطه.</> }
+                ],
+                toolsList: ["أي نموذج لغوي (ChatGPT, Claude, Gemini)"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "للسرد القصصي الجذاب (Storytelling Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d5a02525d881918e4b5084dbb0d6de-storytelling-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1lWQtnIjUL_8UAJ-AArdPNlNSSYaO4OPv?usp=sharing" }
+                        ]
+                    },
+                    {
+                        title: "لأنسنة النص المكتوب وتنسيقه:",
+                        links: [
+                            { name: "مساعد AI Humanizer (ChatGPT)", url: "https://chatgpt.com/g/g-2azCVmXdy-ai-humanizer" },
+                            { name: "المنسق المحترف (ChatGPT)", url: "https://chatgpt.com/g/g-68f50e7379b88191add70c6858cc7b6e-lmnsq-lmhtrf" }
+                        ]
+                    },
+                    {
+                        title: "للتسويق وصناعة المحتوى والإعلانات:",
+                        links: [
+                            { name: "Ask Hani Shaker 3.0", url: "https://chatgpt.com/g/g-68d1d01909d48191840bb52975a4b1e9-ask-hani-shaker-3-0" },
+                            { name: "Copywriter GPT", url: "https://chatgpt.com/g/g-Ji2QOyMml-copywriter-gpt-marketing-branding-ads" },
+                            { name: "MARKETING Mentor", url: "https://chatgpt.com/g/g-DtjWjSDiv-marketing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الجمهور يشتري <strong>"النتيجة"</strong> ولا يشتري <strong>"الشرح الجاف"</strong>. اطلب من المساعد دائماً صياغة محتواك بأسلوب قصصي تفاعلي.</li>
+                    </ul>
+                )
+            },
+            {
                 id: "w2",
-                title: "3. مسار صناعة العروض التقديمية (Presentations)",
+                title: "10. مسار صناعة العروض التقديمية (Presentations)",
                 icon: "presentation",
                 needs: [
                     <>هل تمتلك المحتوى جاهزاً أم تحتاج من الذكاء الاصطناعي أن يكتبه لك من <span className="font-bold text-[--accent-green]">الصفر</span>؟</>,
@@ -1393,7 +1659,7 @@
             },
             {
                 id: "w3",
-                title: "4. مسار الإنفوجرافيك والخرائط الذهنية (Infographics)",
+                title: "11. مسار الإنفوجرافيك والخرائط الذهنية (Infographics)",
                 icon: "pie-chart",
                 needs: [
                     <>هل تريد إخراج الإنفوجرافيك <span className="font-bold text-[--accent-green]">كصورة</span> (مربع للسوشيال، طولي للستوري، عرضي للعروض)؟</>,
@@ -1429,7 +1695,7 @@
             },
             {
                 id: "w4",
-                title: "5. مسار صناعة وتعديل الصور (Image Generation)",
+                title: "12. مسار صناعة وتعديل الصور (Image Generation)",
                 icon: "image",
                 needs: [
                     <>هل تريد بناء أمر لتوليد صورة من خيالك من الصفر <span className="font-bold text-[--accent-green]">(Text to Image)</span>؟</>,
@@ -1467,7 +1733,7 @@
             },
             {
                 id: "w5",
-                title: "6. مسار صناعة الفيديوهات والتحريك (Video Creation)",
+                title: "13. مسار صناعة الفيديوهات والتحريك (Video Creation)",
                 icon: "video",
                 needs: [
                     "هل تريد توليد فيديو سينمائي كلياً بالذكاء الاصطناعي؟",
@@ -1511,7 +1777,7 @@
             },
             {
                 id: "w6",
-                title: "7. مسار الهندسة الصوتية والبودكاست (Voice & Audio)",
+                title: "14. مسار الهندسة الصوتية والبودكاست (Voice & Audio)",
                 icon: "audio-lines",
                 needs: [
                     <>هل تريد تحويل نص مكتوب لتعليق صوتي <span className="font-bold text-[--accent-green]">(Text-to-Speech)</span>؟</>,
@@ -1550,44 +1816,8 @@
                 )
             },
             {
-                id: "w7",
-                title: "8. مسار المذاكرة والتعلم الفائق (Guided Learning)",
-                icon: "graduation-cap",
-                needs: [
-                    "هل تريد المذاكرة من مصادرك الخاصة (مذكرات، محاضرات)؟",
-                    "أم تريد تعلم مهارة جديدة كلياً من الصفر؟"
-                ],
-                methods: [
-                    { title: "المذاكرة من مصادرك:", text: <>قم برفع كل محاضراتك إلى NotebookLM كقاعدة معرفية <span className="font-bold text-[--accent-green]">(Knowledge Base)</span>. اطلب منه توليد Flashcards أو كويزات سريعة.</> },
-                    { title: "تعلم مهارة جديدة:", text: <>المشكلة الكبرى هي أن النماذج تقوم بسرد المعلومات دفعة واحدة. الحل هو تفعيل وضع <span className="font-bold text-[--accent-green]">"المدرس الخصوصي"</span> (Guided Learning). أخبره: "أريد تعلم كذا، اسألني خطوة بخطوة، واختبر مستواي قبل الانتقال".</> }
-                ],
-                toolsList: ["NotebookLM", "Gemini", "ChatGPT"],
-                targetCategory: "تعلم فعال",
-                assistantsGroups: [
-                    {
-                        title: "المساعدون (GPTs) الأساسية:",
-                        links: [
-                            { name: "مساعد NotebookLM Mood", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
-                            { name: "مساعد Universal Primer للتعلم التدريجي", url: "https://chatgpt.com/g/g-GbLbctpPz-universal-primer" }
-                        ]
-                    },
-                    {
-                        title: "للتلخيص بأسلوب د. محمود حرب (Smarter Mood):",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f0f763bd24819192d82c0187cad244-smarter-mood" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/2c3c6d25f368" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>في NotebookLM، استخدم خاصية <strong>(Learning Guide)</strong> لتحويل أي ملف معقد إلى دليل دراسي شامل بضغطة زر.</li>
-                    </ul>
-                )
-            },
-            {
                 id: "w8",
-                title: "9. مسار البرمجة والتطبيقات (Vibe Coding)",
+                title: "15. مسار البرمجة والتطبيقات (Vibe Coding)",
                 icon: "code",
                 needs: [
                     "هل تريد تصميم تطبيق ويب أو موقع تعريفي لخدماتك؟",
@@ -1620,162 +1850,8 @@
                 )
             },
             {
-                id: "w9",
-                title: "10. مسار بيئة العمل وتحليل البيانات (Workspace & Office)",
-                icon: "briefcase",
-                needs: [
-                    "هل تستخدم تطبيقات Google (Docs, Forms, Sheets) لتنظيم عملك؟",
-                    "أم تعتمد بشكل كبير على برامج Microsoft Office (خاصة Excel و Word) للملفات الضخمة؟"
-                ],
-                methods: [
-                    { title: "Google Workspace:", text: "استخدم الذكاء الاصطناعي داخل Google Docs لإعادة صياغة التقارير، أو داخل Forms لتوليد كويزات واستبيانات. (ملاحظة: استخدام Gemini داخل بيئة Google Workspace يتطلب خطة مدفوعة)." },
-                    { title: "Microsoft Office (Excel & PowerPoint):", text: <>يمكنك تسطيب إضافة <span className="font-bold text-[--accent-green]">Claude</span> داخل برامج الأوفيس مباشرة (حتى على الخطة المجانية) لتحليل البيانات المعقدة وإنشاء العروض.</> }
-                ],
-                toolsList: ["Claude.ai", "Google Docs AI", "Google Forms AI"],
-                targetCategory: "استخدام يومي",
-                assistantsGroups: [
-                    {
-                        title: "إضافات Claude الرسمية (Office):",
-                        links: [
-                            { name: "Claude for PowerPoint", url: "https://marketplace.microsoft.com/en-us/product/office/WA200010001?tab=Overview" },
-                            { name: "Claude for Excel", url: "https://marketplace.microsoft.com/en-us/product/saas/wa200009404?tab=overview" }
-                        ]
-                    },
-                    {
-                        title: "لإعادة تنظيم النصوص وهيكلتها (المنسق المحترف):",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f50e7379b88191add70c6858cc7b6e-lmnsq-lmhtrf" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/a41d02a879cc" }
-                        ]
-                    },
-                    {
-                        title: "لتحليل البيانات الدقيقة:",
-                        links: [
-                            { name: "مساعد Data Analysis & Report AI (ChatGPT)", url: "https://chatgpt.com/g/g-2OebMtWeG-data-analysis-report-ai" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>استخدم <strong>Claude</strong> دائماً عندما يكون لديك ملف ضخم وتحتاج لمساعد قادر على قراءة السياق بالكامل دون ضياع معلومات.</li>
-                    </ul>
-                )
-            },
-            {
-                id: "w10",
-                title: "11. مسار المساعد الشخصي (Custom GPT / Gem)",
-                icon: "bot",
-                needs: [
-                    <>هل تريد بناء <span className="font-bold text-[--accent-green]">"مساعد شخصي دائم"</span> (Custom GPT) يقوم بمهمة محددة في عملك؟</>
-                ],
-                methods: [
-                    { title: "بناء الموظف الرقمي:", steps: [
-                        "تحدث أولاً مع (Gem Builder Mood) واشرح له فكرتك ليصيغ لك \"التعليمات الدقيقة\".",
-                        "افتح Explore GPTs في ChatGPT أو Gem Manager في Gemini، وقم بإنشاء مساعد جديد.",
-                        <>الخطوة الأهم: ارفع ملفات أعمالك السابقة في قسم <span className="font-bold text-[--accent-green]">القاعدة المعرفية (Knowledge Base)</span> ليعتمد عليها المساعد.</>
-                    ]}
-                ],
-                toolsList: ["ChatGPT (Explore GPTs)", "Gemini (Gem Manager)"],
-                targetCategory: "وكلاء الذكاء الاصطناعي",
-                assistantsGroups: [
-                    {
-                        title: "لتخطيط وبناء المساعدين (Gem Builder Mood):",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f3759786e48191b7ce1e7ca3f11158-gem-builder-mood" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/98bb0d1cf7db" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>الموظف الرقمي بدون <strong>"قاعدة معرفية"</strong> (ملفات PDF مرفوعة مسبقاً) هو مجرد محادثة عادية. قوة الموظف الرقمي تكمن في الملفات التي تدربه عليها.</li>
-                    </ul>
-                )
-            },
-            {
-                id: "w11",
-                title: "12. مسار العصف الذهني وتوليد الأفكار (Idea Generation)",
-                icon: "lightbulb",
-                needs: [
-                    "هل تعاني من \"قفلة الكاتب\" وتحتاج إلى أفكار جديدة لمحتواك؟",
-                    "هل تحتاج لمواكبة أحدث التريندات في السوق قبل البدء في التنفيذ؟",
-                    "هل تحتاج لتغذية بصرية أو فكرية لمشروعك؟"
-                ],
-                methods: [
-                    { title: "التغذية البصرية والفكرية:", steps: [
-                        <><strong>تغذية بصرية:</strong> تصفح منصات مثل Pinterest لجمع إلهام بصري لأفكارك.</>,
-                        <><strong>تغذية فكرية:</strong> استخدم النماذج اللغوية مثل (ChatGPT, Gemini, Claude) كمرافقين للعصف الذهني.</>
-                    ]},
-                    { title: "تحليل السوق واستخراج الأفكار:", text: <>قبل البدء في المحتوى، اجلس مع مساعد الأفكار. اطلب منه <span className="font-bold text-[--accent-green]">تحليل التريند الحالي</span> في مجالك داخل النطاق الجغرافي المستهدف.</> },
-                    { title: "جلسة العصف الذهني (Brainstorming):", text: "لا تطلب فكرة واحدة، بل اطلب منه توليد 10 أفكار بزوايا مختلفة لنفس الموضوع (زاوية كوميدية، زاوية علمية)، وتناقش معه لدمج الأفكار." }
-                ],
-                toolsList: ["Perplexity", "ChatGPT", "Gemini", "Claude", "Pinterest"],
-                targetCategory: "استخدام يومي",
-                assistantsGroups: [
-                    {
-                        title: "للشريك الإبداعي وخبير التريندات (Idea Mood):",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d52f1c20f08191b93f39a825e55b7d-idea-mood-lshryk-lbd-y-wkhbyr-ltryndt" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1f7wGePE2WA_D5HUsG1I1OSj39j0hLqXg?usp=sharing" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>الفكرة القوية توفر نصف مجهود التنفيذ. اقضِ وقتاً كافياً في مسار توليد الأفكار لتضمن أن المحتوى الذي ستصنعه له جمهور يبحث عنه.</li>
-                    </ul>
-                )
-            },
-            {
-                id: "w12",
-                title: "13. مسار كتابة المحتوى والسرد القصصي (Content Writing & Storytelling)",
-                icon: "book-copy",
-                needs: [
-                    "هل تريد كتابة محتوى سوشيال ميديا (بوستات) أو مقالات احترافية؟",
-                    "هل تبحث عن كتابة اسكريبتات جذابة للفيديوهات؟",
-                    "هل تريد تحويل معلوماتك إلى قصة تلفت انتباه القارئ؟",
-                    "هل كتبت محتوى بالذكاء الاصطناعي وتحتاج لأنسنته (Humanize) أو تنسيقه؟"
-                ],
-                methods: [
-                    { title: "كتابة المحتوى والاسكريبتات:", text: "استخدم المساعدين لكتابة المنشورات أو مقالات المدونة. بالنسبة للفيديوهات، اطلب كتابة اسكريبت مقسم إلى مشهد (بصري) وتعليق (صوتي)." },
-                    { title: "تحويل المعلومات إلى قصص:", text: <>لا تنشر معلوماتك في شكل نقاط جافة. استخدم مساعد <span className="font-bold text-[--accent-green]">السرد القصصي (Storytelling)</span> ليصيغها في قالب يركز على المشكلة والحل.</> },
-                    { title: "تنسيق الكلام وأنسنته (Humanize):", text: <>أي نص آلي يحتوي على كلمات مبتذلة. ضعه في مساعد <span className="font-bold text-[--accent-green]">(AI Humanizer)</span> لإضافة لمسة بشرية حقيقية والتخلص من الأسلوب الروبوتي، ثم مرره على "المنسق المحترف" لضبطه.</> }
-                ],
-                toolsList: ["أي نموذج لغوي (ChatGPT, Claude, Gemini)"],
-                targetCategory: "استخدام يومي",
-                assistantsGroups: [
-                    {
-                        title: "للسرد القصصي الجذاب (Storytelling Mood):",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d5a02525d881918e4b5084dbb0d6de-storytelling-mood" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1lWQtnIjUL_8UAJ-AArdPNlNSSYaO4OPv?usp=sharing" }
-                        ]
-                    },
-                    {
-                        title: "لأنسنة النص المكتوب وتنسيقه:",
-                        links: [
-                            { name: "مساعد AI Humanizer (ChatGPT)", url: "https://chatgpt.com/g/g-2azCVmXdy-ai-humanizer" },
-                            { name: "المنسق المحترف (ChatGPT)", url: "https://chatgpt.com/g/g-68f50e7379b88191add70c6858cc7b6e-lmnsq-lmhtrf" }
-                        ]
-                    },
-                    {
-                        title: "للتسويق وصناعة المحتوى والإعلانات:",
-                        links: [
-                            { name: "Ask Hani Shaker 3.0", url: "https://chatgpt.com/g/g-68d1d01909d48191840bb52975a4b1e9-ask-hani-shaker-3-0" },
-                            { name: "Copywriter GPT", url: "https://chatgpt.com/g/g-Ji2QOyMml-copywriter-gpt-marketing-branding-ads" },
-                            { name: "MARKETING Mentor", url: "https://chatgpt.com/g/g-DtjWjSDiv-marketing" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>الجمهور يشتري <strong>"النتيجة"</strong> ولا يشتري <strong>"الشرح الجاف"</strong>. اطلب من المساعد دائماً صياغة محتواك بأسلوب قصصي تفاعلي.</li>
-                    </ul>
-                )
-            },
-            {
                 id: "w13",
-                title: "14. مسار العلامة الشخصية والتسويق (Personal Branding)",
+                title: "16. مسار العلامة الشخصية والتسويق (Personal Branding)",
                 icon: "award",
                 needs: [
                     "هل تريد بناء هويتك الشخصية ووضع خطة لتسويق مهاراتك بشكل احترافي؟",
@@ -1795,72 +1871,17 @@
                             { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d59a364f388191938802692a260165-brandmentor-mstshr-hwytk-lshkhsy" },
                             { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1S9B5oAs7fOe_SiEiD3yOIAiGSA00OJf1?usp=sharing" }
                         ]
+                    },
+                    {
+                        title: "لصياغة الإعلانات والتسويق:",
+                        links: [
+                            { name: "مساعد Copywriter GPT (ChatGPT)", url: "https://chatgpt.com/g/g-Ji2QOyMml-copywriter-gpt-marketing-branding-ads" }
+                        ]
                     }
                 ],
                 tip: (
                     <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
                         <li>العلامة الشخصية القوية هي التي تجلب لك العملاء بدلاً من أن تبحث أنت عنهم. التزم بخطة النشر التي سيضعها لك مستشار هويتك لتضمن تواجداً مستمراً في ذهن جمهورك.</li>
-                    </ul>
-                )
-            },
-            {
-                id: "w_projects",
-                title: "15. مسار إدارة المشاريع المتخصصة (Projects & Notebooks)",
-                icon: "folder-kanban",
-                needs: [
-                    "شغال فريلانس أو عندك مشروع معين وملفات وعاوز تعمل محادثات معزولة داخل المشروع؟"
-                ],
-                methods: [
-                    { title: "التجهيز مع المساعد:", text: <>اذهب للمساعد <span className="font-bold text-[--accent-green]">(Notebooks/ Projects Mood)</span> وأعطه فكرة عن المشروع، وكيف تريده أن يرد عليك، ثم ارفع مرفقات مشروعك ليديلك "التعليمات" التي ستضعها في بيئة المشروع ليلتزم بها النموذج.</> },
-                    { title: "الإنشاء والتطبيق:", text: "قم بإنشاء المشروع (Project) في Claude/ChatGPT أو (Notebook) في Gemini. ارفع المرفقات، وضع التعليمات المستخرجة." },
-                    { title: "الذاكرة المعزولة:", text: "تستطيع الآن تفعيل الذاكرة لهذه الجزئية فقط، بحيث يتذكر أي محادثات قمت بها داخل المشروع، وتفصلها تماماً عن الذاكرة الأساسية للنموذج بالخارج." }
-                ],
-                toolsList: ["ChatGPT Projects", "Claude Projects", "Gemini Gems", "NotebookLM"],
-                targetCategory: "استخدام يومي",
-                assistantsGroups: [
-                    {
-                        title: "لتجهيز بيئة المشروع (Notebooks/ Projects Mood):",
-                        description: "مهندس معماري استباقي لتصميم مساحات العمل والمشاريع الاحترافية وتنقية مصادرها المعرفية بدقة.",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69df467c404c8191b083f7d85150947b-notebooks-projects-mood" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/18_nwXjzEJvgGc0JMLxjuLMNGMDuW3LH2?usp=sharing" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>الفصل التام لبيئة المشروع يمنع الذكاء الاصطناعي من الخلط بين مهامك المختلفة أو تسريب أسلوب مشروع لآخر.</li>
-                    </ul>
-                )
-            },
-            {
-                id: "w_notebooklm",
-                title: "16. مسارات وتطبيقات NotebookLM المتقدمة",
-                icon: "notebook",
-                needs: [
-                    "كيف أستفيد من NotebookLM بشكل يومي في الكورسات، الحياة الشخصية، والشغل؟"
-                ],
-                methods: [
-                    { title: "المذاكرة والكورسات:", text: "اعمل نوت بوك للكورس اللي بتاخده حالياً أو اللي بتقدمه للناس لمساعدتك ومساعدة الطلبة على هضم المحتوى. واستخدم (الاستوديو) لعمل كويزات، فلاش كاردز، بريزنتيشن، انفوجرافيك، تقارير، شيت، بودكاست مختصر أو تفصيلي، وفيديوهات شرح." },
-                    { title: "المساعد الشخصي (دليل معرفي):", text: "ممكن تعمل مساعد شخصي يعتمد على النوت بوك للرد من القاعدة المعرفية، ولو بتعمل مساعد على أداة غير Gemini (مثل ChatGPT)، اطلب من النوت بوك \"دليل معرفي متكامل\" وارفعه كملف قاعدة معرفية (Knowledge base) للمساعد." },
-                    { title: "تجميع الداتا (الشغل والبيت):", text: "لتجميع داتا الشغل والإيرادات، أو داتا البيت وأرقام الصنايعية وكتالوجات الأجهزة، بحيث لو احتجت رقم أو حصل مشكلة في جهاز تستعين بها فوراً." },
-                    { title: "الريكوردات والأدلة:", text: "تحويل الريكوردات لاسكريبتات تفصيلية (بدون اشتراكات مدفوعة)، أو عمل كتيب/دليل متكامل من مصادر متفرقة (كتب، ريكوردات، ملفات، يوتيوب)." },
-                    { title: "الكتب الصوتية:", text: "تحويل الكتب لكتب صوتية: استخراج النص من الرواية فصل بفصل، ثم تحويله لصوت باختيار الشخصية وطريقة الإلقاء." }
-                ],
-                toolsList: ["NotebookLM"],
-                targetCategory: "إضافات NotebookLM",
-                assistantsGroups: [
-                    {
-                        title: "المساعد المتخصص (NotebookLM Mood):",
-                        links: [
-                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
-                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/ac08e2d00ff7" }
-                        ]
-                    }
-                ],
-                tip: (
-                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
-                        <li>قوة NotebookLM لا تكمن فقط في التلخيص، بل في كونه <strong>مخاً ثانياً</strong> لك يربط كل مصادرك معاً.</li>
                     </ul>
                 )
             }
@@ -2007,6 +2028,7 @@
                             />
                         </Accordion>
 
+                        {/* Workflows Accordion (الدليل العملي لمسارات الذكاء الاصطناعي) */}
                         <Accordion 
                             title="مسارات Workflows (الدليل المفصل)" 
                             isOpen={openAccordion === "workflows"} 
