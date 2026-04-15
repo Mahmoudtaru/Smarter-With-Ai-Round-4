@@ -13,12 +13,12 @@
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     
-    <!-- React and ReactDOM (Updated to Cloudflare CDN for better stability) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
     <!-- Babel for JSX transpilation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
         // Set theme on initial load to prevent FOUC (Flash of Unstyled Content)
@@ -257,7 +257,7 @@
     <script type="text/babel">
         const { useState, useEffect, useCallback, useRef, useMemo } = React;
 
-        // Icon Component
+        // Icon Component - Optimized to prevent lag (Self-contained)
         const Icon = ({ name, className }) => {
             const wrapperRef = useRef(null);
 
@@ -269,7 +269,8 @@
                     wrapperRef.current.innerHTML = ''; 
                     wrapperRef.current.appendChild(i);
                     
-                    window.lucide.createIcons({ nodes: [i] });
+                    // Fast and isolated icon creation! Doesn't scan the whole DOM.
+                    window.lucide.createIcons({ root: wrapperRef.current });
 
                     const svg = wrapperRef.current.querySelector('svg');
                     if (svg && className) {
@@ -280,7 +281,7 @@
                 }
             }, [name, className]);
 
-            return <span ref={wrapperRef} className="inline-block" />;
+            return <span ref={wrapperRef} className="inline-flex items-center justify-center" />;
         };
 
         // Reminder Component
@@ -290,7 +291,7 @@
                     <Icon name="brain-circuit" className="w-8 h-8 text-[--accent-green] flex-shrink-0 mt-1" />
                     <div>
                         <h3 className="text-lg font-bold text-[--accent-green] mb-1">رسالة من مساعدك الذكي</h3>
-                        <p className="text-gray-700 dark:text-gray-200 text-sm">{children}</p>
+                        <div className="text-gray-700 dark:text-gray-200 text-sm">{children}</div>
                     </div>
                 </div>
             );
@@ -352,7 +353,7 @@
                         className="accordion-content"
                         style={{ maxHeight: isOpen ? '5000px' : '0' }}
                     >
-                        <div className="p-5 border-t border-gray-200 space-y-6">
+                        <div className="p-5 border-t border-gray-200 space-y-6 bg-white dark:bg-[#141c29]">
                             {children}
                         </div>
                     </div>
@@ -363,13 +364,6 @@
         // NestedAccordion Component
         const NestedAccordion = ({ title, icon, isOpen, onToggle, children }) => {
             const contentRef = useRef(null);
-
-            useEffect(() => {
-                if (isOpen && window.lucide) {
-                     const timeoutId = setTimeout(() => window.lucide.createIcons(), 0);
-                    return () => clearTimeout(timeoutId);
-                }
-            }, [isOpen]);
 
             return (
                 <div className="nested-accordion">
@@ -389,7 +383,7 @@
                         className="nested-accordion-content"
                         style={{ maxHeight: isOpen ? '5000px' : '0' }}
                     >
-                        <div className="nested-accordion-content-inner text-gray-700 space-y-4">
+                        <div className="nested-accordion-content-inner text-gray-700 space-y-4 bg-white dark:bg-[#1a2433]">
                             {children}
                         </div>
                     </div>
@@ -408,13 +402,54 @@
                 >
                     <Icon name={icon} className="w-5 h-5 text-[--accent-green] flex-shrink-0 mt-1" />
                     <div className="flex-grow">
-                        <span className="font-semibold text-gray-800">{title}</span>
-                        {description && <p className="text-sm text-gray-600">{description}</p>}
+                        <span className="font-semibold text-gray-800 dark:text-gray-200">{title}</span>
+                        {description && <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>}
                     </div>
                     <Icon name="external-link" className="w-5 h-5 text-gray-400 flex-shrink-0 mt-1" />
                 </a>
             );
         };
+
+        // Hero Tool Card Component (For Smarter Tools Section)
+        const HeroToolCard = ({ title, icon, description, featuresTitle, features, linkUrl, linkLabel }) => (
+            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border-l-4 border-l-[--accent-green] border border-gray-200 dark:border-gray-700 shadow-sm transition-all hover:shadow-md">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                    <div className="p-3 bg-green-50 dark:bg-slate-700 rounded-lg text-[--accent-green] flex-shrink-0 w-fit">
+                        <Icon name={icon} className="w-8 h-8" />
+                    </div>
+                    <div className="flex-grow space-y-3">
+                        <div>
+                            <h4 className="font-bold text-xl text-[--accent-navy] dark:text-[--accent-green] mb-1">{title}</h4>
+                            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">{description}</p>
+                        </div>
+                        
+                        {features && features.length > 0 && (
+                            <div className="bg-gray-50 dark:bg-slate-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600">
+                                <span className="font-bold text-sm block mb-2 text-[--accent-navy] dark:text-gray-200 flex items-center gap-1">
+                                    <Icon name="sparkles" className="w-4 h-4 text-yellow-500" />
+                                    {featuresTitle}
+                                </span>
+                                <div className="flex flex-wrap gap-2">
+                                    {features.map((feature, idx) => (
+                                        <span key={idx} className="text-xs sm:text-sm bg-white dark:bg-slate-600 border border-gray-200 dark:border-gray-500 px-2 py-1 rounded-md text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                                            <Icon name="check" className="w-3 h-3 text-[--accent-green]" />
+                                            {feature}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        
+                        <div className="mt-4">
+                            <a href={linkUrl} target="_blank" rel="noopener noreferrer" className="btn-brand-primary w-full sm:w-auto px-6 py-2.5 rounded-lg inline-flex items-center justify-center gap-2 text-sm font-bold shadow-sm">
+                                <span>{linkLabel}</span>
+                                <Icon name="external-link" className="w-4 h-4" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
 
         // Header Component
         const Header = ({ theme, onThemeToggle }) => {
@@ -452,7 +487,7 @@
                 { tabId: 'lectures', icon: 'book-open', label: 'المحاضرات' },
                 { tabId: 'tasks', icon: 'clipboard-list', label: 'التاسكات' },
                 { tabId: 'bonus', icon: 'gift', label: 'البونص' },
-                { tabId: 'share', icon: 'heart-handshake', label: 'شاركنا' },
+                { tabId: 'more', icon: 'menu', label: 'المزيد' },
             ];
 
             return (
@@ -474,13 +509,6 @@
         // HomeTab Component
         const HomeTab = () => {
             const [isInstallAccordionOpen, setInstallAccordionOpen] = useState(false);
-            
-            useEffect(() => {
-                if (isInstallAccordionOpen && window.lucide) {
-                     const timeoutId = setTimeout(() => window.lucide.createIcons(), 0);
-                    return () => clearTimeout(timeoutId);
-                }
-            }, [isInstallAccordionOpen]);
 
             return (
                 <div className="space-y-6">
@@ -565,7 +593,7 @@
                                      <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">المحاضرات:</span> جميع محاضرات وأدلة الدبلومة.</span></li>
                                      <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">التاسكات:</span> المهام العملية الأسبوعية.</span></li>
                                      <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">البونص:</span> بنك أدوات ومصادر إضافية.</span></li>
-                                     <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">شاركنا:</span> لدعمنا ومشاركة رأيك.</span></li>
+                                     <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">المزيد:</span> ترشيحات ومصادر خارجية.</span></li>
                                 </ul>
                            </div>
                         </div>
@@ -682,13 +710,6 @@
             useEffect(() => {
                 localStorage.setItem(LECTURE_COMPLETION_KEY, JSON.stringify(completedLectures));
             }, [completedLectures]);
-            
-            useEffect(() => {
-                if (window.lucide) {
-                    const timeoutId = setTimeout(() => window.lucide.createIcons(), 0);
-                    return () => clearTimeout(timeoutId);
-                }
-            }, [openWeek, completedLectures, isAvailabilityOpen]);
 
             const handleToggleWeek = (title) => {
                 setOpenWeek(prev => (prev === title ? null : title));
@@ -703,8 +724,8 @@
             
             let total = 0;
             let completed = 0;
-            lecturesData.forEach(week => {
-                if (week.lectures) {
+            lecturesData.forEach((week, index) => {
+                if (index <= CURRENT_WEEK_INDEX && week.lectures) {
                     total += week.lectures.length;
                     week.lectures.forEach(lecture => {
                         if (completedLectures[`${week.title}-${lecture.title}`]) {
@@ -755,7 +776,7 @@
                         </a>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-4 mt-6">
                         {lecturesData.map((week, index) => {
                             const isLocked = index > CURRENT_WEEK_INDEX;
                             const totalLectures = week.lectures?.length || 0;
@@ -1014,8 +1035,8 @@
                     )}
 
                     {item.note && (
-                        <div className="mt-5 p-4 bg-red-50 dark:bg-red-900/20 border-r-4 border-red-500 rounded-lg text-red-700 dark:text-red-400 font-semibold flex items-start gap-3 shadow-sm">
-                            <Icon name="info" className="w-6 h-6 flex-shrink-0" />
+                        <div className="mt-5 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-r-4 border-yellow-500 rounded-lg text-yellow-800 dark:text-yellow-400 font-semibold flex items-start gap-3 shadow-sm">
+                            <Icon name="lightbulb" className="w-6 h-6 flex-shrink-0" />
                             <p className="leading-relaxed">{item.note}</p>
                         </div>
                     )}
@@ -1052,9 +1073,6 @@
 
             useEffect(() => {
                 localStorage.setItem(TASK_COMPLETION_KEY, JSON.stringify(completedTasks));
-                 if (window.lucide) {
-                    window.lucide.createIcons();
-                }
             }, [completedTasks]);
 
             const handleToggleTask = (taskKey) => {
@@ -1067,13 +1085,16 @@
             const { totalTasksCount, totalCompletedTasks } = useMemo(() => {
                 let total = 0;
                 let completed = 0;
-                tasksData.forEach(week => {
-                    total += week.tasks.length;
-                    week.tasks.forEach(task => {
-                        if (completedTasks[`${week.title}-${task}`]) {
-                            completed++;
-                        }
-                    });
+                tasksData.forEach((week, index) => {
+                    if (index <= CURRENT_WEEK_INDEX) {
+                        total += week.tasks.length;
+                        week.tasks.forEach(task => {
+                            const taskText = typeof task === 'string' ? task : task.text;
+                            if (completedTasks[`${week.title}-${taskText}`]) {
+                                completed++;
+                            }
+                        });
+                    }
                 });
                 return { totalTasksCount: total, totalCompletedTasks: completed };
             }, [completedTasks]);
@@ -1093,14 +1114,6 @@
                         icon="clipboard-check"
                     />
 
-                    {/* رسالة تشجيعية للديدلاين */}
-                    <div className="bg-green-50 dark:bg-green-900/20 border border-[--accent-green] rounded-lg p-4 flex items-center gap-3 shadow-sm transform transition-all hover:scale-[1.01]">
-                        <Icon name="heart" className="w-8 h-8 text-[--accent-green] flex-shrink-0 animate-pulse" />
-                        <p className="text-gray-800 dark:text-gray-200 font-bold leading-relaxed text-sm sm:text-base">
-                            الديدلاين مهم بس حتى لو أخرت، فـ احنا نحب نشوفك بتشاركنا محاولاتك عشان تكون Smarter With AI 💚
-                        </p>
-                    </div>
-                    
                     {/* Active Channel Button - New Gradient Style */}
                     <div className="text-center">
                          <a 
@@ -1138,6 +1151,14 @@
                                 />
                             )
                         ))}
+                    </div>
+
+                    {/* رسالة تشجيعية للديدلاين */}
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-[--accent-green] rounded-lg p-4 flex items-center gap-3 shadow-sm transform transition-all hover:scale-[1.01] mt-6">
+                        <Icon name="heart" className="w-8 h-8 text-[--accent-green] flex-shrink-0 animate-pulse" />
+                        <p className="text-gray-800 dark:text-gray-200 font-bold leading-relaxed text-sm sm:text-base">
+                            الديدلاين مهم بس حتى لو أخرت، فـ احنا نحب نشوفك بتشاركنا محاولاتك عشان تكون Smarter With AI 💚
+                        </p>
                     </div>
                 </div>
             );
@@ -1287,7 +1308,8 @@
                     { name: "Bookshelf Folder Manager", url: "https://chromewebstore.google.com/detail/bookshelf-folder-manager/ibjbgddbhlcookmdhehgljaneccjidik" },
                     { name: "Kortex (All-in-One Tool)", url: "https://kortex-notebooklm.com/" },
                     { name: "NotebookLM Language Switcher", url: "https://chromewebstore.google.com/detail/notebooklm-language-switc/bkmhaelpdihelhfpfachdmhoogbdhkjj" },
-                    { name: "NotebookLM Ultra Exporter", url: "https://chromewebstore.google.com/detail/notebooklm-ultra-exporter/afchokljnhhggkhedfbmkcmdagjmjchj" }
+                    { name: "NotebookLM Ultra Exporter", url: "https://chromewebstore.google.com/detail/notebooklm-ultra-exporter/afchokljnhhggkhedfbmkcmdagjmjchj" },
+                    { name: "NotebookLM Watermark Remover (إزالة العلامة المائية)", url: "https://notebooklmremover.com/en" }
                 ]
             },
             {
@@ -1313,9 +1335,586 @@
             }
         ];
 
+        const workflowsData = [
+            {
+                id: "w1",
+                title: "1. مسار البحث المتقدم واستخراج المعلومات (Deep Search)",
+                icon: "search",
+                needs: [
+                    "هل تبحث عن معلومة سريعة أو خبر حدث اليوم؟",
+                    "أم تحتاج إلى بحث أكاديمي أو دسم يحتاج لجمع مصادر وتقارير متعددة؟"
+                ],
+                methods: [
+                    { title: "حالة البحث السريع:", text: <>ملاحظة هامة: حالياً معظم أدوات الذكاء الاصطناعي بتكون مفعلة البحث بشكل تلقائي. لكن لو واجهتك مشكلة والنموذج جاوبك ببيانات قديمة، ارجع للإعدادات العامة وتأكد إن <span className="font-bold text-[--accent-green]">وضع البحث (Search Mode)</span> مُفعل يدوياً لضمان اتصاله بالإنترنت للحصول على أحدث نتائج.</> },
+                    { title: "حالة البحث العميق:", text: "لا تقم بإلقاء سؤالك مباشرة للنموذج. اتبع هذه الخطوات:", steps: [
+                        <>تحدث أولاً مع مساعد <span className="font-bold text-[--accent-green]">"هندسة الأوامر" (Search Prompting Mood)</span>. اشرح له السياق، ما تبحث عنه، وما تريد استبعاده.</>,
+                        <>سيقوم المساعد بصياغة <span className="font-bold text-[--accent-green]">"أمر بحث احترافي شامل"</span>.</>,
+                        <>خذ هذا الأمر، واذهب إلى مساعد <span className="font-bold text-[--accent-green]">"البحث العميق" (Deep Research Mood)</span> وأعطه الأمر ليبدأ في فحص مئات المواقع واستخراج تقرير موثق بالروابط.</>
+                    ]}
+                ],
+                toolsList: ["Perplexity", "ChatGPT Search", "Gemini Search", "Consensus (للبحث الأكاديمي)"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "لصياغة أمر البحث: Search Prompting Mood",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d48fb4cc6c8191a43c1ad13bb3ec39-search-prompting-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1D8Ud75Cpr1PwyTMR6kS9XDqDnQX3BRKm?usp=sharing" }
+                        ]
+                    },
+                    {
+                        title: "لتنفيذ البحث العميق:",
+                        links: [
+                            { name: "مساعد Deep Research (Gemini)", url: "https://gemini.google.com/gem/1c1SAvchx_uzgwtYE6olBc9Et-T3mXrlK?usp=sharing" },
+                            { name: "مساعد Scholar GPT (ChatGPT)", url: "https://chatgpt.com/g/g-kZ0eYXlJe-scholar-gpt" },
+                            { name: "مساعد Consensus الأكاديمي (ChatGPT)", url: "https://chatgpt.com/g/g-bo0FiWLY7-consensus" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>إذا كنت تبحث في سياق طبي أو علمي دقيق، اجعل نقطة انطلاقك أداة <strong>Consensus</strong> لأنها تبحث حصراً في الأوراق العلمية المنشورة.</li>
+                        <li>يُفضل مشاهدة المحاضرات المتعلقة بالبحث، ورفع مصادر (ملفات أو روابط) بحيث تلهم النموذج وتوجهه كفلتر وموجه لنتائج أدق.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w_schedule",
+                title: "2. مسار المهام المجدولة (Scheduled Tasks)",
+                icon: "calendar-clock",
+                needs: [
+                    "هل تريد أتمتة مهام روتينية مثل متابعة أحدث الجديد في مجالك؟",
+                    "هل تحتاج لاستلام آخر الأخبار والتقارير بشكل مجدول يومياً؟"
+                ],
+                methods: [
+                    { title: "المهام المجدولة:", text: "استخدم منصات الذكاء الاصطناعي واكتب أمراً مثل: \"ابحث عن هذا الموضوع واجمع آخر الأخبار وكرر هذا البحث يومياً الساعة 8 صباحاً وأرسل لي التقرير\"." }
+                ],
+                toolsList: ["ChatGPT", "Perplexity", "Claude", "Gemini"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>تنويه هام: ميزة المهام المجدولة (Scheduled AI) تتوفر غالباً في <strong>الاشتراكات المدفوعة فقط</strong> لمعظم المواقع.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w2",
+                title: "3. مسار صناعة العروض التقديمية (Presentations)",
+                icon: "presentation",
+                needs: [
+                    <>هل تمتلك المحتوى جاهزاً أم تحتاج من الذكاء الاصطناعي أن يكتبه لك من <span className="font-bold text-[--accent-green]">الصفر</span>؟</>,
+                    <>هل أنت ملزم <span className="font-bold text-[--accent-green]">بهوية بصرية</span> لشركتك (لوجو وألوان محددة) أم تريد تصميماً حراً؟</>
+                ],
+                methods: [
+                    { title: "توليد المحتوى والتصميم:", text: "", steps: [
+                        "إذا كانت مجرد فكرة، اطلب من المساعد أولاً تقسيم الفكرة إلى محاور رئيسية لكل شريحة.",
+                        "إذا كان المحتوى جاهزاً، اطلب منه تلخيصه في نقاط قصيرة.",
+                        "حدد للذكاء الاصطناعي ما إذا كنت تريده أن يصممها كـ (شرائح عرض جاهزة) أم كـ (كود برمجي)."
+                    ]},
+                    { title: "تطبيق الهوية البصرية (اللوجو والألوان):", text: "", steps: [
+                        <>إذا كنت تستخدم NotebookLM: قم بإنشاء ملف <span className="font-bold text-[--accent-green]">(Brand Guidelines)</span> يحتوي على ألوانك وارفع اللوجو كملف (Source) داخل النوت بوك ليتم اعتماده.</>,
+                        <>إذا كنت تستخدم Gamma أو وكلاء الذكاء الاصطناعي: يجب رفع اللوجو الخاص بك على موقع استضافة صور مجاني للحصول على رابط مباشر <span className="font-bold text-[--accent-green]">(Direct Link)</span>، ثم قم بوضع الرابط في البرومبت واطلب منه استخدام هذا الشعار في كل الشرائح.</>
+                    ]}
+                ],
+                toolsList: ["NotebookLM", "Gamma", "AI Agents (z.ai, Skywork, Genspark, Manus)"],
+                targetCategory: "بريزنتيشن",
+                assistantsGroups: [
+                    {
+                        title: "Presentation Mood",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68fff06a60e881918be273126a53ce97-presentation-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/a5583365f87f" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-3 text-sm sm:text-base">
+                        <li>طريقة استضافة الصور علي الانترنت سهلة وبسيطة، هتدخل علي موقع <strong>PostImages.org</strong> وترفع الصورة أو الصور، تختار (Direct Link) وتعطيه للمساعد.</li>
+                        <div className="mr-6 mt-2 mb-4">
+                            <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-700 dark:text-blue-300 font-bold bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-900 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+                                🔗 موقع PostImages.org
+                            </a>
+                        </div>
+                        <li>لإزالة شعار أداة NotebookLM من العروض التقديمية النهائية، استخدم هذا الموقع المجاني:</li>
+                        <div className="mr-6 mt-2">
+                            <a href="https://notebooklmremover.com/en" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-700 dark:text-blue-300 font-bold bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-900 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+                                🔗 انتقل إلى موقع NotebookLM Remover
+                            </a>
+                        </div>
+                    </ul>
+                )
+            },
+            {
+                id: "w3",
+                title: "4. مسار الإنفوجرافيك والخرائط الذهنية (Infographics)",
+                icon: "pie-chart",
+                needs: [
+                    <>هل تريد إخراج الإنفوجرافيك <span className="font-bold text-[--accent-green]">كصورة</span> (مربع للسوشيال، طولي للستوري، عرضي للعروض)؟</>,
+                    <>أم تريده <span className="font-bold text-[--accent-green]">ككود برمجي تفاعلي</span> (يتم عرضه في Canvas)؟</>
+                ],
+                methods: [
+                    { title: "لتوليد صورة باللغة العربية:", text: <>النماذج العادية تخطئ في كتابة الحروف العربية داخل الصور. لذلك، خذ المحتوى الخاص بك واذهب حصراً إلى نموذج <span className="font-bold text-[--accent-green]">(Nano Banana Pro)</span>، واطلب منه تصميم إنفوجرافيك مع كتابة النصوص المرفقة، وسيخرجها بتشكيل دقيق وبدون أخطاء.</> },
+                    { title: "لتحويل النصوص المعقدة بصرياً بضغطة زر:", text: <>استخدم موقع <span className="font-bold text-[--accent-green]">Napkin.ai</span>. قم بلصق النص بالكامل، ثم ظلل أي فقرة معقدة واضغط على (Generate Visual)، سيقوم بتحويلها فوراً إلى هيكل بصري ومخططات دون تغيير حرف واحد من النص.</> },
+                    { title: "لإنشاء كود تفاعلي:", text: <>تأكد أولاً من تفعيل وضع <span className="font-bold text-[--accent-green]">(Canvas)</span> في ChatGPT أو Gemini قبل إدخال البرومبت، لكي يتم رسم المخطط أمامك وتتمكن من التعديل عليه.</> }
+                ],
+                toolsList: ["Gemini (Nano Banana Pro)", "Napkin.ai", "Flow", "NotebookLM"],
+                targetCategory: "انفوجرافيك",
+                assistantsGroups: [
+                    {
+                        title: "Infographic Mood",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d75f28ff1c8191bc20c3e5dae522f3-infographic-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/22d7d2c55efc" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-3 text-sm sm:text-base">
+                        <li>يمكنك استخدام NotebookLM لتوليد إنفوجرافيك سريع للمصادر التي قمت برفعها وتحديد الستايل المناسب لك.</li>
+                        <li>لإزالة اللوجو الخاص بهم من الإنفوجرافيك، استخدم هذه الأداة:</li>
+                        <div className="mr-6 mt-2">
+                            <a href="https://notebooklmremover.com/en" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-700 dark:text-blue-300 font-bold bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-900 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+                                🔗 أداة NotebookLM Remover
+                            </a>
+                        </div>
+                    </ul>
+                )
+            },
+            {
+                id: "w4",
+                title: "5. مسار صناعة وتعديل الصور (Image Generation)",
+                icon: "image",
+                needs: [
+                    <>هل تريد بناء أمر لتوليد صورة من خيالك من الصفر <span className="font-bold text-[--accent-green]">(Text to Image)</span>؟</>,
+                    <>هل تمتلك صورة وتريد استخدامها <span className="font-bold text-[--accent-green]">كمرجع (Reference)</span> لمحاكاة نفس الاستايل؟</>,
+                    <>هل تمتلك صورة تعجبك وتريد معرفة الأمر الذي كُتب لتوليدها <span className="font-bold text-[--accent-green]">(الهندسة العكسية)</span>؟</>
+                ],
+                methods: [
+                    { title: "التوليد من الصفر (Text to Image):", text: "استخدم مساعد الصور، واشرح له الفكرة، زوايا الكاميرا، والإضاءة المطلوبة، ليقوم بضبط الأمر الاحترافي الذي ستضعه في أداة التوليد." },
+                    { title: "استخدام صورة كمرجع (Image Reference):", text: "ارفع الصورة المرجعية لأدوات التوليد (مثل Flow أو Midjourney)، واطلب منها إنشاء صورة جديدة تماماً ولكن مع الالتزام بنفس الستايل اللوني أو نفس ملامح الشخصية الموجودة في الصورة المرجعية." },
+                    { title: "الهندسة العكسية (Reverse Engineering):", text: "ارفع الصورة التي تعجبك لمساعد (Image to Text)، واطلب منه: \"حلل هذه الصورة واستخرج البرومبت الدقيق\". خذ البرومبت الناتج وعدل عليه وضعه في أداة التوليد." }
+                ],
+                toolsList: ["Nano Banana Pro", "Midjourney", "Flow", "Seedream", "GPTimage"],
+                targetCategory: "صور",
+                assistantsGroups: [
+                    {
+                        title: "لتوليد وهندسة الأوامر (Image Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68fea03a56dc8191a1a9d28a4fad9fca-image-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/d17049195aae" }
+                        ]
+                    },
+                    {
+                        title: "لاستخراج الأوامر من الصور (Image to Text Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d59caa0c948191b35ee89ba0d6ed1b-image-to-text-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1YhsJoW5qWaaxUBh8QH4QTnvkg8RBk2NK?usp=sharing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>كلما كان وصف الإضاءة وزاوية العدسة دقيقاً في البرومبت، كلما ظهرت الصورة أقرب للواقع وأبعد عن المظهر الكرتوني المعتاد للذكاء الاصطناعي.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w5",
+                title: "6. مسار صناعة الفيديوهات والتحريك (Video Creation)",
+                icon: "video",
+                needs: [
+                    "هل تريد توليد فيديو سينمائي كلياً بالذكاء الاصطناعي؟",
+                    <>هل تريد تصميم <span className="font-bold text-[--accent-green]">"أفاتار متكلم"</span> متكامل؟</>,
+                    <>هل تريد نقل حركة شخص حقيقي لصورة ثابتة <span className="font-bold text-[--accent-green]">(Motion Control)</span>؟</>
+                ],
+                methods: [
+                    { title: "التوليد الكلي بالذكاء الاصطناعي:", steps: [
+                        <><strong>نص لفيديو (Text to Video):</strong> الموضوع بيعتمد علي هدفك، لو مجرد فيديو واحد 8 ثواني استخدم النص.</>,
+                        <><strong>صورة لفيديو (Image to Video):</strong> لتجربة نماذج إنشاء الفيديوهات (لفيديوهات طويلة متناسقة للشخصيات والأماكن)، يُفضل توليد صور المشاهد وتحريكها.</>,
+                        <>لتجنب عشوائية المشاهد، لا تعتمد على النص فقط. قم أولاً بتوليد صورة للمشهد الافتتاحي <span className="font-bold text-[--accent-green]">(First Frame)</span> وصورة للمشهد الختامي <span className="font-bold text-[--accent-green]">(Last Frame)</span>، وارفع الصورتين للأداة واطلب منها ربط المشهدين (هذا يضمن ترابط سينمائي دقيق). وتقدر أيضاً ترفع صورة First frame فقط.</>
+                    ]},
+                    { title: "تصميم الأفاتار المتكلم (AI Avatar):", steps: [
+                        "تصميم الشخصية والاستوديو: قم بتوليد صورة ثابتة للشخصية (الأفاتار) ثم صمم صورة لها تجلس في الاستوديو الذي تريده.",
+                        "تجهيز الصوت: إما بتسجيل الصوت بنفسك (لضمان الواقعية) واستخدامه مباشرة، أو تحويله لصوت شخصية أخرى (Voice changing)، أو توليده عبر أدوات توليد الصوت من نص.",
+                        "المزامنة (Lip-sync): ارفع الصورة وملف الصوت لمنصات الأفاتار لتقوم بمزامنة حركة الشفاه والجسم مع الصوت بدقة."
+                    ]},
+                    { title: "نقل الحركة (Motion Control):", steps: [
+                        "جهز الفيديو الأصلي للشخص الحقيقي الذي يتحرك، ثم جهز الصورة الثابتة التي تريد نقل الحركة إليها.",
+                        "ارفع الملفين لموقع يوفر نماذج نقل الحركة (مثل Kling).",
+                        "في قسم التعليمات المتقدمة اكتب أمراً يشدد على الالتزام بالواقعية ونقل الحركة دون تشويه."
+                    ]}
+                ],
+                toolsList: ["Kling", "Seedance", "Veo", "HeyGen", "Pippit"],
+                targetCategory: "فيديو",
+                assistantsGroups: [
+                    {
+                        title: "لرسم الستوري بورد وهندسة المشاهد (Video Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68ff5eaa948c8191b97b52768811dec8-video-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/dbd9d2431eca" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>السر في الفيديوهات سريعة الانتشار هو <strong>"الستوري بورد"</strong>. اطلب من المساعد دائماً كتابة سيناريو مقسم إلى مشاهد قبل البدء في توليد أي فيديو.</li>
+                        <li>في نقل الحركة: يُفضل أن يحتوي الفيديو الأصلي على شخص واحد فقط، حتى يستطيع النموذج تتبعه وينقل الحركة للصورة المرفقة بنجاح.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w6",
+                title: "7. مسار الهندسة الصوتية والبودكاست (Voice & Audio)",
+                icon: "audio-lines",
+                needs: [
+                    <>هل تريد تحويل نص مكتوب لتعليق صوتي <span className="font-bold text-[--accent-green]">(Text-to-Speech)</span>؟</>,
+                    <>هل تريد تغيير صوتك الحالي لصوت شخصية أخرى <span className="font-bold text-[--accent-green]">(Voice Changer)</span>؟</>,
+                    <>هل تريد استنساخ صوتك لتوليد نصوص جديدة مستقبلاً <span className="font-bold text-[--accent-green]">(Voice Cloning)</span>؟</>,
+                    "هل تريد تحويل ملفات دسمة إلى حلقة بودكاست؟"
+                ],
+                methods: [
+                    { title: "تحويل النص لصوت:", text: "حدد النص، اختر الصوت والشخصية، واكتب تعليمات الإلقاء بوضوح." },
+                    { title: "تغيير الصوت (Voice Changer):", text: "سجل الصوت بنفسك بطريقتك، ثم ارفع هذا التسجيل للأداة واطلب منها تغيير خامة الصوت لتبدو كصوت مختلف مع الاحتفاظ بالمشاعر." },
+                    { title: "استنساخ الصوت (Voice Cloning):", text: "قم برفع عينة صوتية واضحة لك (15-30 ثانية). ستقوم الأداة بصنع نسخة رقمية من نبرة صوتك." },
+                    { title: "البودكاست:", text: "ارفع الكتب أو المقالات إلى NotebookLM واطلب توليد (Audio Overview)." }
+                ],
+                toolsList: ["Google AI Studio", "Minimax", "Fish Audio", "ElevenLabs", "NotebookLM"],
+                targetCategory: "صوت",
+                assistantsGroups: [
+                    {
+                        title: "للهندسة الصوتية واستنساخ الصوت (Voice Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69dfc148364c8191af327ddc7f13314c-voice-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/19mR4k6oy2DATekTHRD6KUZyliB6QLG-B?usp=sharing" }
+                        ]
+                    },
+                    {
+                        title: "للبودكاست (NotebookLM Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/ac08e2d00ff7" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>إذا كان النص طويلاً، قم بتقسيمه إلى فقرات وضع تعليمات إلقاء مختلفة لكل فقرة لكسر رتابة الصوت الآلي وجعله طبيعياً.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w7",
+                title: "8. مسار المذاكرة والتعلم الفائق (Guided Learning)",
+                icon: "graduation-cap",
+                needs: [
+                    "هل تريد المذاكرة من مصادرك الخاصة (مذكرات، محاضرات)؟",
+                    "أم تريد تعلم مهارة جديدة كلياً من الصفر؟"
+                ],
+                methods: [
+                    { title: "المذاكرة من مصادرك:", text: <>قم برفع كل محاضراتك إلى NotebookLM كقاعدة معرفية <span className="font-bold text-[--accent-green]">(Knowledge Base)</span>. اطلب منه توليد Flashcards أو كويزات سريعة.</> },
+                    { title: "تعلم مهارة جديدة:", text: <>المشكلة الكبرى هي أن النماذج تقوم بسرد المعلومات دفعة واحدة. الحل هو تفعيل وضع <span className="font-bold text-[--accent-green]">"المدرس الخصوصي"</span> (Guided Learning). أخبره: "أريد تعلم كذا، اسألني خطوة بخطوة، واختبر مستواي قبل الانتقال".</> }
+                ],
+                toolsList: ["NotebookLM", "Gemini", "ChatGPT"],
+                targetCategory: "تعلم فعال",
+                assistantsGroups: [
+                    {
+                        title: "المساعدون (GPTs) الأساسية:",
+                        links: [
+                            { name: "مساعد NotebookLM Mood", url: "https://chatgpt.com/g/g-68f6cc30b078819197b1375a44e8ca83-notebooklm-mood" },
+                            { name: "مساعد Universal Primer للتعلم التدريجي", url: "https://chatgpt.com/g/g-GbLbctpPz-universal-primer" }
+                        ]
+                    },
+                    {
+                        title: "للتلخيص بأسلوب د. محمود حرب (Smarter Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f0f763bd24819192d82c0187cad244-smarter-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/2c3c6d25f368" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>في NotebookLM، استخدم خاصية <strong>(Learning Guide)</strong> لتحويل أي ملف معقد إلى دليل دراسي شامل بضغطة زر.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w8",
+                title: "9. مسار البرمجة والتطبيقات (Vibe Coding)",
+                icon: "code",
+                needs: [
+                    "هل تريد تصميم تطبيق ويب أو موقع تعريفي لخدماتك؟",
+                    "أم تريد برمجة لعبة تفاعلية بسيطة لمشاركتها مع الآخرين؟",
+                    "هل تبدأ من وصف نصي أم من صورة لموقع يعجبك؟"
+                ],
+                methods: [
+                    { title: "التصميم خطوة بخطوة:", text: <>ابدأ المحادثة برفع السكرين شوت أو الوصف النصي. تأكد من تفعيل <span className="font-bold text-[--accent-green]">بيئة العمل (Canvas)</span>.</> },
+                    { title: "التعديل البصري:", text: "سيظهر الكود في شاشة، والتصميم المبدئي في شاشة أخرى. لا تكتب أكواداً لتعديل الموقع؛ بل استخدم البرومبت العادي، وسيقوم هو بتحديث الكود فوراً." },
+                    { title: "الاستضافة والمشاركة:", text: "بعد الانتهاء، انسخ الكود النهائي وقم برفعه على منصة مجانية مثل GitHub لتحصل على رابط حقيقي للموقع." },
+                    { title: "بناء الإضافات والتطبيقات:", text: "يمكنك إضافة مسار لبناء إضافة على المتصفح (Chrome Extension) أو تطبيق على (Google AI Studio) من خلال ميزة Build، وسيوجهك الذكاء الاصطناعي خطوة بخطوة." }
+                ],
+                toolsList: ["Gemini Canvas", "ChatGPT Canvas", "GitHub", "Google AI Studio"],
+                targetCategory: "وكلاء الذكاء الاصطناعي",
+                assistantsGroups: [
+                    {
+                        title: "للمواقع والتطبيقات (Web/App Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f871de1834819187de2b11bd4af145-web-app-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/ccc6a7afa824" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>لا تطلب بناء الموقع كاملاً في أمر واحد. اطلب الهيكل الأساسي أولاً، ثم إضافة الألوان، ثم الصور، <strong>خطوة بخطوة</strong>.</li>
+                        <li>لا تكتفي بالنتيجة الأولى، عدل عليها براحتك وتقدر تستخدم ميزة <strong>(Select and Ask)</strong> عشان تعلم على أي جزء في الكود أو التصميم ويعدلهالك فوراً.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w9",
+                title: "10. مسار بيئة العمل وتحليل البيانات (Workspace & Office)",
+                icon: "briefcase",
+                needs: [
+                    "هل تستخدم تطبيقات Google (Docs, Forms, Sheets) لتنظيم عملك؟",
+                    "أم تعتمد بشكل كبير على برامج Microsoft Office (خاصة Excel و Word) للملفات الضخمة؟"
+                ],
+                methods: [
+                    { title: "Google Workspace:", text: "استخدم الذكاء الاصطناعي داخل Google Docs لإعادة صياغة التقارير، أو داخل Forms لتوليد كويزات واستبيانات. (ملاحظة: استخدام Gemini داخل بيئة Google Workspace يتطلب خطة مدفوعة)." },
+                    { title: "Microsoft Office (Excel & PowerPoint):", text: <>يمكنك تسطيب إضافة <span className="font-bold text-[--accent-green]">Claude</span> داخل برامج الأوفيس مباشرة (حتى على الخطة المجانية) لتحليل البيانات المعقدة وإنشاء العروض.</> }
+                ],
+                toolsList: ["Claude.ai", "Google Docs AI", "Google Forms AI"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "إضافات Claude الرسمية (Office):",
+                        links: [
+                            { name: "Claude for PowerPoint", url: "https://marketplace.microsoft.com/en-us/product/office/WA200010001?tab=Overview" },
+                            { name: "Claude for Excel", url: "https://marketplace.microsoft.com/en-us/product/saas/wa200009404?tab=overview" }
+                        ]
+                    },
+                    {
+                        title: "لإعادة تنظيم النصوص وهيكلتها (المنسق المحترف):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f50e7379b88191add70c6858cc7b6e-lmnsq-lmhtrf" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/a41d02a879cc" }
+                        ]
+                    },
+                    {
+                        title: "لتحليل البيانات الدقيقة:",
+                        links: [
+                            { name: "مساعد Data Analysis & Report AI (ChatGPT)", url: "https://chatgpt.com/g/g-2OebMtWeG-data-analysis-report-ai" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>استخدم <strong>Claude</strong> دائماً عندما يكون لديك ملف ضخم وتحتاج لمساعد قادر على قراءة السياق بالكامل دون ضياع معلومات.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w10",
+                title: "11. مسار المساعد الشخصي (Custom GPT / Gem)",
+                icon: "bot",
+                needs: [
+                    <>هل تريد بناء <span className="font-bold text-[--accent-green]">"مساعد شخصي دائم"</span> (Custom GPT) يقوم بمهمة محددة في عملك؟</>
+                ],
+                methods: [
+                    { title: "بناء الموظف الرقمي:", steps: [
+                        "تحدث أولاً مع (Gem Builder Mood) واشرح له فكرتك ليصيغ لك \"التعليمات الدقيقة\".",
+                        "افتح Explore GPTs في ChatGPT أو Gem Manager في Gemini، وقم بإنشاء مساعد جديد.",
+                        <>الخطوة الأهم: ارفع ملفات أعمالك السابقة في قسم <span className="font-bold text-[--accent-green]">القاعدة المعرفية (Knowledge Base)</span> ليعتمد عليها المساعد.</>
+                    ]}
+                ],
+                toolsList: ["ChatGPT (Explore GPTs)", "Gemini (Gem Manager)"],
+                targetCategory: "وكلاء الذكاء الاصطناعي",
+                assistantsGroups: [
+                    {
+                        title: "لتخطيط وبناء المساعدين (Gem Builder Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-68f3759786e48191b7ce1e7ca3f11158-gem-builder-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/98bb0d1cf7db" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الموظف الرقمي بدون <strong>"قاعدة معرفية"</strong> (ملفات PDF مرفوعة مسبقاً) هو مجرد محادثة عادية. قوة الموظف الرقمي تكمن في الملفات التي تدربه عليها.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w11",
+                title: "12. مسار العصف الذهني وتوليد الأفكار (Idea Generation)",
+                icon: "lightbulb",
+                needs: [
+                    "هل تعاني من \"قفلة الكاتب\" وتحتاج إلى أفكار جديدة لمحتواك؟",
+                    "هل تحتاج لمواكبة أحدث التريندات في السوق قبل البدء في التنفيذ؟",
+                    "هل تحتاج لتغذية بصرية أو فكرية لمشروعك؟"
+                ],
+                methods: [
+                    { title: "التغذية البصرية والفكرية:", steps: [
+                        <><strong>تغذية بصرية:</strong> تصفح منصات مثل Pinterest لجمع إلهام بصري لأفكارك.</>,
+                        <><strong>تغذية فكرية:</strong> استخدم النماذج اللغوية مثل (ChatGPT, Gemini, Claude) كمرافقين للعصف الذهني.</>
+                    ]},
+                    { title: "تحليل السوق واستخراج الأفكار:", text: <>قبل البدء في المحتوى، اجلس مع مساعد الأفكار. اطلب منه <span className="font-bold text-[--accent-green]">تحليل التريند الحالي</span> في مجالك داخل النطاق الجغرافي المستهدف.</> },
+                    { title: "جلسة العصف الذهني (Brainstorming):", text: "لا تطلب فكرة واحدة، بل اطلب منه توليد 10 أفكار بزوايا مختلفة لنفس الموضوع (زاوية كوميدية، زاوية علمية)، وتناقش معه لدمج الأفكار." }
+                ],
+                toolsList: ["Perplexity", "ChatGPT", "Gemini", "Claude", "Pinterest"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "للشريك الإبداعي وخبير التريندات (Idea Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d52f1c20f08191b93f39a825e55b7d-idea-mood-lshryk-lbd-y-wkhbyr-ltryndt" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1f7wGePE2WA_D5HUsG1I1OSj39j0hLqXg?usp=sharing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الفكرة القوية توفر نصف مجهود التنفيذ. اقضِ وقتاً كافياً في مسار توليد الأفكار لتضمن أن المحتوى الذي ستصنعه له جمهور يبحث عنه.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w12",
+                title: "13. مسار كتابة المحتوى والسرد القصصي (Content Writing & Storytelling)",
+                icon: "book-copy",
+                needs: [
+                    "هل تريد كتابة محتوى سوشيال ميديا (بوستات) أو مقالات احترافية؟",
+                    "هل تبحث عن كتابة اسكريبتات جذابة للفيديوهات؟",
+                    "هل تريد تحويل معلوماتك إلى قصة تلفت انتباه القارئ؟",
+                    "هل كتبت محتوى بالذكاء الاصطناعي وتحتاج لأنسنته (Humanize) أو تنسيقه؟"
+                ],
+                methods: [
+                    { title: "كتابة المحتوى والاسكريبتات:", text: "استخدم المساعدين لكتابة المنشورات أو مقالات المدونة. بالنسبة للفيديوهات، اطلب كتابة اسكريبت مقسم إلى مشهد (بصري) وتعليق (صوتي)." },
+                    { title: "تحويل المعلومات إلى قصص:", text: <>لا تنشر معلوماتك في شكل نقاط جافة. استخدم مساعد <span className="font-bold text-[--accent-green]">السرد القصصي (Storytelling)</span> ليصيغها في قالب يركز على المشكلة والحل.</> },
+                    { title: "تنسيق الكلام وأنسنته (Humanize):", text: <>أي نص آلي يحتوي على كلمات مبتذلة. ضعه في مساعد <span className="font-bold text-[--accent-green]">(AI Humanizer)</span> لإضافة لمسة بشرية حقيقية والتخلص من الأسلوب الروبوتي، ثم مرره على "المنسق المحترف" لضبطه.</> }
+                ],
+                toolsList: ["أي نموذج لغوي (ChatGPT, Claude, Gemini)"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "للسرد القصصي الجذاب (Storytelling Mood):",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d5a02525d881918e4b5084dbb0d6de-storytelling-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1lWQtnIjUL_8UAJ-AArdPNlNSSYaO4OPv?usp=sharing" }
+                        ]
+                    },
+                    {
+                        title: "لأنسنة النص المكتوب وتنسيقه:",
+                        links: [
+                            { name: "مساعد AI Humanizer (ChatGPT)", url: "https://chatgpt.com/g/g-2azCVmXdy-ai-humanizer" },
+                            { name: "المنسق المحترف (ChatGPT)", url: "https://chatgpt.com/g/g-68f50e7379b88191add70c6858cc7b6e-lmnsq-lmhtrf" }
+                        ]
+                    },
+                    {
+                        title: "للتسويق وصناعة المحتوى والإعلانات:",
+                        links: [
+                            { name: "Ask Hani Shaker 3.0", url: "https://chatgpt.com/g/g-68d1d01909d48191840bb52975a4b1e9-ask-hani-shaker-3-0" },
+                            { name: "Copywriter GPT", url: "https://chatgpt.com/g/g-Ji2QOyMml-copywriter-gpt-marketing-branding-ads" },
+                            { name: "MARKETING Mentor", url: "https://chatgpt.com/g/g-DtjWjSDiv-marketing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الجمهور يشتري <strong>"النتيجة"</strong> ولا يشتري <strong>"الشرح الجاف"</strong>. اطلب من المساعد دائماً صياغة محتواك بأسلوب قصصي تفاعلي.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w13",
+                title: "14. مسار العلامة الشخصية والتسويق (Personal Branding)",
+                icon: "award",
+                needs: [
+                    "هل تريد بناء هويتك الشخصية ووضع خطة لتسويق مهاراتك بشكل احترافي؟",
+                    "هل تحتاج لتحليل منافسيك في السوق لمعرفة نقاط القوة والضعف؟"
+                ],
+                methods: [
+                    { title: "بناء الهوية الاستباقية:", text: "اجلس مع مستشار هويتك الشخصية. سيقوم بتحليل شخصيتك وتوجيهك خطوة بخطوة لبناء خطة محتوى تبرزك كخبير." },
+                    { title: "البورتفوليو:", text: "لا ترسل ملف PDF كـ CV. استخدم أدوات الذكاء الاصطناعي لتحويل بياناتك إلى موقع بورتفوليو تفاعلي ومبهر." },
+                    { title: "تحليل المنافسين:", text: "ارفع روابط حسابات منافسيك أو الخبراء في مجالك واطلب من المساعد تحليل استراتيجياتهم." }
+                ],
+                toolsList: ["النماذج اللغوية (Gemini, ChatGPT)", "أدوات Vibe Coding"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "Personal Branding Mood:",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69d59a364f388191938802692a260165-brandmentor-mstshr-hwytk-lshkhsy" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/1S9B5oAs7fOe_SiEiD3yOIAiGSA00OJf1?usp=sharing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>العلامة الشخصية القوية هي التي تجلب لك العملاء بدلاً من أن تبحث أنت عنهم. التزم بخطة النشر التي سيضعها لك مستشار هويتك لتضمن تواجداً مستمراً في ذهن جمهورك.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w_projects",
+                title: "15. مسار إدارة المشاريع المتخصصة (Projects & Notebooks)",
+                icon: "folder-kanban",
+                needs: [
+                    "شغال فريلانس أو عندك مشروع معين وملفات وعاوز تعمل محادثات معزولة داخل المشروع؟"
+                ],
+                methods: [
+                    { title: "التجهيز مع المساعد:", text: <>اذهب للمساعد <span className="font-bold text-[--accent-green]">(Notebooks/ Projects Mood)</span> وأعطه فكرة عن المشروع، وكيف تريده أن يرد عليك، ثم ارفع مرفقات مشروعك ليديلك "التعليمات" التي ستضعها في بيئة المشروع ليلتزم بها النموذج.</> },
+                    { title: "الإنشاء والتطبيق:", text: "قم بإنشاء المشروع (Project) في Claude/ChatGPT أو (Notebook) في Gemini. ارفع المرفقات، وضع التعليمات المستخرجة." },
+                    { title: "الذاكرة المعزولة:", text: "تستطيع الآن تفعيل الذاكرة لهذه الجزئية فقط، بحيث يتذكر أي محادثات قمت بها داخل المشروع، وتفصلها تماماً عن الذاكرة الأساسية للنموذج بالخارج." }
+                ],
+                toolsList: ["ChatGPT Projects", "Claude Projects", "Gemini Gems", "NotebookLM"],
+                targetCategory: "استخدام يومي",
+                assistantsGroups: [
+                    {
+                        title: "لتجهيز بيئة المشروع (Notebooks/ Projects Mood):",
+                        description: "مهندس معماري استباقي لتصميم مساحات العمل والمشاريع الاحترافية وتنقية مصادرها المعرفية بدقة.",
+                        links: [
+                            { name: "نسخة ChatGPT", url: "https://chatgpt.com/g/g-69df467c404c8191b083f7d85150947b-notebooks-projects-mood" },
+                            { name: "نسخة Gemini", url: "https://gemini.google.com/gem/18_nwXjzEJvgGc0JMLxjuLMNGMDuW3LH2?usp=sharing" }
+                        ]
+                    }
+                ],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>الفصل التام لبيئة المشروع يمنع الذكاء الاصطناعي من الخلط بين مهامك المختلفة أو تسريب أسلوب مشروع لآخر.</li>
+                    </ul>
+                )
+            },
+            {
+                id: "w_notebooklm",
+                title: "16. مسارات وتطبيقات NotebookLM المتقدمة",
+                icon: "notebook",
+                needs: [
+                    "كيف أستفيد من NotebookLM بشكل يومي في الكورسات، الحياة الشخصية، والشغل؟"
+                ],
+                methods: [
+                    { title: "المذاكرة والكورسات:", text: "اعمل نوت بوك للكورس اللي بتاخده حالياً أو اللي بتقدمه للناس لمساعدتك ومساعدة الطلبة على هضم المحتوى. واستخدم (الاستوديو) لعمل كويزات، فلاش كاردز، بريزنتيشن، انفوجرافيك، تقارير، شيت، بودكاست مختصر أو تفصيلي، وفيديوهات شرح." },
+                    { title: "المساعد الشخصي (دليل معرفي):", text: "ممكن تعمل مساعد شخصي يعتمد على النوت بوك للرد من القاعدة المعرفية، ولو بتعمل مساعد على أداة غير Gemini (مثل ChatGPT)، اطلب من النوت بوك \"دليل معرفي متكامل\" وارفعه كملف قاعدة معرفية (Knowledge base) للمساعد." },
+                    { title: "تجميع الداتا (الشغل والبيت):", text: "لتجميع داتا الشغل والإيرادات، أو داتا البيت وأرقام الصنايعية وكتالوجات الأجهزة، بحيث لو احتجت رقم أو حصل مشكلة في جهاز تستعين بها فوراً." },
+                    { title: "الريكوردات والأدلة:", text: "تحويل الريكوردات لاسكريبتات تفصيلية (بدون اشتراكات مدفوعة)، أو عمل كتيب/دليل متكامل من مصادر متفرقة (كتب، ريكوردات، ملفات، يوتيوب)." },
+                    { title: "الكتب الصوتية:", text: "تحويل الكتب لكتب صوتية: استخراج النص من الرواية فصل بفصل، ثم تحويله لصوت باختيار الشخصية وطريقة الإلقاء." }
+                ],
+                toolsList: ["NotebookLM"],
+                targetCategory: "إضافات NotebookLM",
+                assistantsGroups: [],
+                tip: (
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base">
+                        <li>قوة NotebookLM لا تكمن فقط في التلخيص، بل في كونه <strong>مخاً ثانياً</strong> لك يربط كل مصادرك معاً.</li>
+                    </ul>
+                )
+            }
+        ];
+
         const ToolCard = ({ category, isOpen, onToggle }) => {
+            const categoryId = `tool-category-${category.title.replace(/\s+/g, '-')}`;
             return (
-                 <div className="content-card rounded-lg overflow-hidden shadow-md">
+                 <div id={categoryId} className={`content-card rounded-lg overflow-hidden shadow-md transition-all duration-500 ${isOpen ? 'ring-2 ring-[--accent-green]' : ''}`}>
                     <button
                         aria-expanded={isOpen}
                         className="accordion-header w-full text-right p-5 flex items-center justify-between text-lg sm:text-xl font-semibold hover:bg-gray-100 dark:hover:bg-gray-100 focus:outline-none"
@@ -1348,14 +1947,8 @@
         const BonusTab = () => {
             const [openAccordion, setOpenAccordion] = useState(null);
             const [openNestedAccordion, setNestedAccordion] = useState(null);
+            const [openWorkflowAccordion, setOpenWorkflowAccordion] = useState(null);
             const [openToolAccordion, setOpenToolAccordion] = useState(null);
-
-            useEffect(() => {
-              if (window.lucide) {
-                const timeoutId = setTimeout(() => window.lucide.createIcons(), 0);
-                return () => clearTimeout(timeoutId);
-              }
-            }, [openAccordion, openToolAccordion, openNestedAccordion]);
 
             const handleToggle = (title) => {
                 setOpenAccordion(openAccordion === title ? null : title);
@@ -1364,9 +1957,25 @@
             const handleNestedToggle = (title) => {
                 setNestedAccordion(openNestedAccordion === title ? null : title);
             };
+            
+            const handleWorkflowToggle = (id) => {
+                setOpenWorkflowAccordion(openWorkflowAccordion === id ? null : id);
+            };
 
             const handleToolToggle = (title) => {
                 setOpenToolAccordion(openToolAccordion === title ? null : title);
+            };
+
+            const scrollToToolCategory = (categoryTitle) => {
+                setOpenToolAccordion(categoryTitle);
+                setTimeout(() => {
+                    const element = document.getElementById(`tool-category-${categoryTitle.replace(/\s+/g, '-')}`);
+                    if (element) {
+                        const yOffset = -80; 
+                        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({top: y, behavior: 'smooth'});
+                    }
+                }, 300);
             };
 
             const reminderText = "ملاحظة هامة: هذا القسم متجدد باستمرار ويضم ترشيحات لأفضل الأدوات والمصادر التي أرى أنها ستضيف قيمة حقيقية لمهاراتك في العمل والدراسة. تفقده دائمًا لاكتشاف الجديد.";
@@ -1388,39 +1997,221 @@
                     </div>
 
                     <div className="space-y-4">
+                        
                         <Accordion 
                             title="أدوات الدبلومة (Smarter Tools)" 
                             isOpen={openAccordion === "smarter_tools"} 
                             onToggle={() => handleToggle("smarter_tools")}
                         >
-                            <div className="flex flex-col rounded-lg overflow-hidden border">
-                                <RecommendationLink 
-                                    href="https://notebooklm.google.com/notebook/7b7f75b1-77f6-4363-ada6-84c730d6bfc7"
-                                    icon="book"
-                                    title="Smarter Notebook"
-                                    description="نوت بوك الدبلومة الشامل"
-                                />
-                                <RecommendationLink 
-                                    href="https://gemini.google.com/gem/1iO5UkN9OqLiCY1TaRgP01ZN0qRbV4n0C?usp=sharing"
-                                    icon="bot"
-                                    title="Smarter Assistant"
-                                    description="المساعد الشخصي الخاص بالدبلومة"
-                                />
-                                <RecommendationLink 
-                                    href="https://t.me/c/3331953900/11/29"
-                                    icon="play-circle"
-                                    title="المساعدون الشخصيون (المحاضرة)"
-                                    description="شرح وتطبيق على المساعدين"
-                                />
-                                <RecommendationLink 
-                                    href="https://mahmoudtaru.github.io/Smarter-Gifts/"
-                                    icon="link"
-                                    title="قائمة المساعدين الشخصيين (Smarter Gifts)"
-                                    description="موقع يضم كافة المساعدين الجاهزين"
-                                />
-                            </div>
+                            <HeroToolCard
+                                title="Smarter Notebook (نوت بوك الدبلومة)"
+                                icon="book-open"
+                                description="تحتوي على جميع محاضرات الدبلومة. تقدر تسألها وترد عليك من المحتوى."
+                                featuresTitle="متوفر لكل محاضرة:"
+                                features={["اختبار", "فلاش كارد", "بريزنتيشن", "انفوجرافيك", "فيديو", "بودكاست صوتي"]}
+                                linkUrl="https://notebooklm.google.com/notebook/7b7f75b1-77f6-4363-ada6-84c730d6bfc7"
+                                linkLabel="فتح النوت بوك"
+                            />
+                            <div className="my-4"></div>
+                            <HeroToolCard
+                                title="Smarter Assistant (مساعد الدبلومة)"
+                                icon="bot"
+                                description="مساعد شخصي على جيمناي مربوط بالنوت بوك الخاصة بالدبلومة."
+                                featuresTitle="هدفه:"
+                                features={["شرح أي شيء مش واضح", "التطبيق على المحتوى", "ترشيح تطبيقات تناسب تخصصك واهتماماتك"]}
+                                linkUrl="https://gemini.google.com/gem/1iO5UkN9OqLiCY1TaRgP01ZN0qRbV4n0C?usp=sharing"
+                                linkLabel="فتح المساعد الشخصي"
+                            />
+                            <div className="my-4"></div>
+                            <HeroToolCard
+                                title="المحاضرات الصوتية (Audio Format)"
+                                icon="headphones"
+                                description="نوفر جميع المحاضرات بصيغة صوتية (MP3)."
+                                featuresTitle="مثالية لـ:"
+                                features={["الاستماع أثناء التنقل", "إنشاء NotebookLM خاصة بك", "التطبيق العملي على محتوى الدبلومة"]}
+                                linkUrl="https://drive.google.com/drive/folders/12ocuaoGLzCgytmdAMme6PpIO9vlHu86E?usp=sharing"
+                                linkLabel="تحميل المحاضرات الصوتية"
+                            />
+                            <div className="my-4"></div>
+                            <HeroToolCard
+                                title="Smarter Gifts (موقع المساعدين الشخصيين)"
+                                icon="gift"
+                                description="موقع شامل يضم كافة المساعدين الشخصيين الجاهزين والمصممين خصيصاً لمختلف التخصصات لتسهيل عملك اليومي."
+                                featuresTitle="مميزات الموقع:"
+                                features={["مساعدون في مختلف المجالات", "جاهزون للاستخدام المباشر", "تحديثات مستمرة", "يوفر وقت بناء الأوامر"]}
+                                linkUrl="https://mahmoudtaru.github.io/Smarter-Gifts/"
+                                linkLabel="زيارة موقع المساعدين"
+                            />
+                            <div className="my-4"></div>
+                            <HeroToolCard
+                                title="شرح المساعدين (المحاضرة)"
+                                icon="play-circle"
+                                description="محاضرة تفصيلية تشرح كيفية استخدام المساعدين الشخصيين وتطبيقهم عملياً لزيادة إنتاجيتك وتحقيق أقصى استفادة."
+                                featuresTitle="تتضمن المحاضرة:"
+                                features={["فهم آلية عمل المساعدين", "تطبيقات وأمثلة عملية", "أفضل الممارسات", "كيفية دمجهم في مسار عملك"]}
+                                linkUrl="https://t.me/c/3331953900/11/29"
+                                linkLabel="مشاهدة المحاضرة"
+                            />
                         </Accordion>
 
+                        {/* Workflows Accordion (الدليل العملي لمسارات الذكاء الاصطناعي) */}
+                        <Accordion 
+                            title="مسارات Workflows (الدليل المفصل)" 
+                            isOpen={openAccordion === "workflows"} 
+                            onToggle={() => handleToggle("workflows")}
+                        >
+                            <div className="bg-white dark:bg-slate-800 p-4 rounded-lg mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base border border-gray-200 dark:border-gray-700 shadow-sm">
+                                <h4 className="font-bold text-[--accent-navy] dark:text-[--accent-green] mb-2">الدليل العملي المفصل لمسارات الذكاء الاصطناعي (AI Workflows Playbook)</h4>
+                                <p>هذا الدليل هو المرجع الشامل لك داخل دبلومة "Smarter With AI". لا تقم بحفظ أسماء الأدوات، بل اتبع المسار الذي يحل مشكلتك الحالية، اقرأ الطريقة المفصلة، استخدم الأداة المناسبة، وانسخ رابط المساعد لتبدأ فوراً.</p>
+                            </div>
+
+                            {workflowsData.map((workflow) => (
+                                <NestedAccordion 
+                                    key={workflow.id} 
+                                    title={workflow.title} 
+                                    icon={workflow.icon} 
+                                    isOpen={openWorkflowAccordion === workflow.id} 
+                                    onToggle={() => handleWorkflowToggle(workflow.id)}
+                                >
+                                    <div className="space-y-5">
+                                        
+                                        {/* احتياجك */}
+                                        <div className="bg-white dark:bg-slate-800 p-4 rounded-md border border-gray-200 dark:border-gray-700">
+                                            <h5 className="font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                                                <Icon name="target" className="w-5 h-5 text-gray-500 dark:text-gray-400"/> 
+                                                حدد احتياجك:
+                                            </h5>
+                                            <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400 text-sm sm:text-base pr-2">
+                                                {workflow.needs.map((need, i) => <li key={i}>{need}</li>)}
+                                            </ul>
+                                        </div>
+
+                                        {/* طرق التنفيذ */}
+                                        <div className="mb-6">
+                                            <h5 className="font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                                                <Icon name="list" className="w-5 h-5 text-gray-500 dark:text-gray-400"/> 
+                                                الطرق المفصلة للتنفيذ:
+                                            </h5>
+                                            <div className="space-y-4 text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed pr-2">
+                                                {workflow.methods.map((method, i) => (
+                                                    <div key={i}>
+                                                        <span className="font-bold text-gray-900 dark:text-gray-100">{method.title}</span>{' '}
+                                                        <span>{method.text}</span>
+                                                        {method.steps && (
+                                                            <ul className="list-disc list-inside pr-4 space-y-2 mt-2">
+                                                                {method.steps.map((step, j) => <li key={j}>{step}</li>)}
+                                                            </ul>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* الأدوات وارتباط ببنك الأدوات */}
+                                        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border border-gray-200 dark:border-gray-700">
+                                            <div className="flex items-center flex-wrap gap-2 text-sm sm:text-base w-full justify-between">
+                                                 <div className="flex items-center gap-2">
+                                                     <span className="font-bold text-gray-700 dark:text-gray-300">الأدوات:</span>
+                                                     <span className="text-[--accent-green] font-bold">{workflow.toolsList.join(' | ')}</span>
+                                                 </div>
+                                                 {workflow.targetCategory && (
+                                                     <button 
+                                                        onClick={() => scrollToToolCategory(workflow.targetCategory)} 
+                                                        className="bg-[#92b43b] text-white text-xs sm:text-sm font-bold px-4 py-2 rounded flex items-center justify-center gap-2 whitespace-nowrap hover:bg-[#7a9632] transition-colors shadow-sm"
+                                                    >
+                                                         <span>الذهاب لقائمة ({workflow.targetCategory})</span>
+                                                         <Icon name="arrow-left" className="w-4 h-4"/> 
+                                                     </button>
+                                                 )}
+                                            </div>
+                                        </div>
+
+                                        {/* المساعدون */}
+                                        {workflow.assistantsGroups && workflow.assistantsGroups.length > 0 && (
+                                            <div className="mb-6">
+                                                 <h5 className="font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2 text-base">
+                                                     <Icon name="bot" className="w-5 h-5 text-gray-500 dark:text-gray-400"/> 
+                                                     المساعدون (GPTs):
+                                                 </h5>
+                                                 <div className="bg-gray-50 dark:bg-slate-800/30 rounded-xl p-4 border border-gray-200 dark:border-gray-700 space-y-4">
+                                                     {workflow.assistantsGroups.map((group, i) => (
+                                                         <div key={i} className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-gray-200 dark:border-gray-700 last:border-0 pb-4 last:pb-0">
+                                                             <div className="flex items-start gap-2 text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">
+                                                                 <Icon name="user" className="w-4 h-4 text-[--accent-green] mt-1 flex-shrink-0" />
+                                                                 <div>
+                                                                     <span>{group.title}</span>
+                                                                     {group.description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-normal leading-relaxed">{group.description}</p>}
+                                                                 </div>
+                                                             </div>
+                                                             <div className="flex flex-wrap items-center gap-3">
+                                                                 {group.links.map((link, j) => (
+                                                                     <a key={j} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[--accent-green] bg-white dark:bg-slate-800 border border-[--accent-green] rounded-lg hover:bg-green-50 dark:hover:bg-slate-700 transition-colors">
+                                                                         <span>{link.name}</span>
+                                                                         <Icon name="external-link" className="w-4 h-4" />
+                                                                     </a>
+                                                                 ))}
+                                                             </div>
+                                                         </div>
+                                                     ))}
+                                                 </div>
+                                            </div>
+                                        )}
+
+                                        {/* نصائح ذهبية */}
+                                        {workflow.tip && (
+                                            <div className="bg-[#fffdf5] dark:bg-yellow-900/10 p-4 rounded-lg border border-[#fde08b] dark:border-yellow-700/50 flex items-start gap-3">
+                                                 <Icon name="lightbulb" className="w-6 h-6 text-yellow-500 flex-shrink-0 mt-1"/>
+                                                 <div className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed w-full">
+                                                     <span className="font-bold text-gray-900 dark:text-white block mb-2">نصائح ذهبية:</span>
+                                                     {workflow.tip}
+                                                 </div>
+                                            </div>
+                                        )}
+
+                                    </div>
+                                </NestedAccordion>
+                            ))}
+                        </Accordion>
+                        
+                    </div>
+                    
+                    <div>
+                        <h2 className="subsection-title text-2xl sm:text-3xl font-bold mb-6 text-center">بنك أدوات الذكاء الاصطناعي</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {toolsData.map((category, index) => (
+                                <ToolCard 
+                                    key={index} 
+                                    category={category} 
+                                    isOpen={openToolAccordion === category.title}
+                                    onToggle={() => handleToolToggle(category.title)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // MoreTab Component
+        const MoreTab = () => {
+            const [openAccordion, setOpenAccordion] = useState(null);
+            const [openNestedAccordion, setNestedAccordion] = useState(null);
+
+            const handleToggle = (title) => {
+                setOpenAccordion(openAccordion === title ? null : title);
+            };
+
+            const handleNestedToggle = (title) => {
+                setNestedAccordion(openNestedAccordion === title ? null : title);
+            };
+
+            return (
+                <div className="space-y-6">
+                    <Reminder>
+                        رسالة شكر: رحلتنا معكم ممتعة، وبكم نكبر ونتطور. رأيك يساهم في تحسين الدبلومة، ودعوتك لأصدقائك توسّع مجتمعنا. هدفنا أن نصبح جميعًا Smarter With AI.
+                    </Reminder>
+                    
+                    <div className="space-y-4">
                         <Accordion 
                             title="ترشيحاتي الخاصة" 
                             isOpen={openAccordion === "recommendations"} 
@@ -1529,27 +2320,6 @@
                                         href="https://youtube.com/playlist?list=PLxe78bIBB8nVGSQbYw6MLKfWuNQmnjKdh&si=7s5NGI-gn7CVgqT-"
                                         icon="youtube"
                                         title="دبلومة التسويق الالكتروني بمساعدة الذكاء الاصطناعي"
-                                    />
-                                </div>
-                            </NestedAccordion>
-
-                            <NestedAccordion
-                                title="Digital Marketing"
-                                icon="briefcase"
-                                isOpen={openNestedAccordion === "marketing"}
-                                onToggle={() => handleNestedToggle("marketing")}
-                            >
-                                <div className="flex flex-col rounded-lg overflow-hidden border">
-                                    <RecommendationLink 
-                                        href="https://t.me/matrixmena/1000"
-                                        icon="briefcase"
-                                        title="Digital marketing workshop"
-                                        description="ورشة عمل في التسويق الرقمي"
-                                    />
-                                    <RecommendationLink 
-                                        href="https://youtube.com/playlist?list=PLxe78bIBB8nVGSQbYw6MLKfWuNQmnjKdh&si=7s5NGI-gn7CVgqT-"
-                                        icon="youtube"
-                                        title="كورس التسويق الالكتروني بمساعدة الذكاء الاصطناعي"
                                     />
                                 </div>
                             </NestedAccordion>
@@ -1758,38 +2528,14 @@
                             </NestedAccordion>
                         </Accordion>
                     </div>
-                    
-                    <div>
-                        <h2 className="subsection-title text-2xl sm:text-3xl font-bold mb-6 text-center">بنك أدوات الذكاء الاصطناعي</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {toolsData.map((category, index) => (
-                                <ToolCard 
-                                    key={index} 
-                                    category={category} 
-                                    isOpen={openToolAccordion === category.title}
-                                    onToggle={() => handleToolToggle(category.title)}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        };
 
-        // ShareTab Component
-        const ShareTab = () => {
-            return (
-                <div className="space-y-6">
-                    <Reminder>
-                        رسالة شكر: رحلتنا معكم ممتعة، وبكم نكبر ونتطور. رأيك يساهم في تحسين الدبلومة، ودعوتك لأصدقائك توسّع مجتمعنا. هدفنا أن نصبح جميعًا Smarter With AI.
-                    </Reminder>
-                    <div className="content-card p-8 rounded-lg shadow-md max-w-2xl mx-auto text-center">
+                    <div className="content-card p-8 rounded-lg shadow-md max-w-2xl mx-auto text-center mt-6">
                         <Icon name="gift" className="w-16 h-16 mx-auto text-[--accent-green]" />
                         <h2 className="page-title text-2xl sm:text-3xl font-bold text-center my-4">شارك الدبلومة مع أحبابك!</h2>
                         <p className="text-gray-700 mb-2">لأننا مبسوطين بوجودك معانا، نحب نشاركك الفرصة دي عشان أصحابك وحبايبك ينضموا لينا.</p>
                         <p className="text-gray-700 font-semibold mb-6">احصل على كود دعوة خاص بيك يدي خصم يصل إلى 40% لأي حد من طرفك (تقدر تستخدمه مع 5 أشخاص).</p>
                         <p className="text-gray-700 mb-8">خليك انت وحبايبك Smarter With AI! 💚</p>
-                        <a href="https://www.facebook.com/messages/t/675407645657010" target="_blank" rel="noopener noreferrer" className="text-white bg-gradient-to-r from-[--accent-green] to-[--accent-navy] hover:opacity-90 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-lg w-full sm:w-auto px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2">
+                        <a href="https://wa.me/201007964766" target="_blank" rel="noopener noreferrer" className="text-white bg-gradient-to-r from-[--accent-green] to-[--accent-navy] hover:opacity-90 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-lg w-full sm:w-auto px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex items-center justify-center gap-2">
                             <Icon name="message-circle" />
                             <span>اطلب كود الدعوة الخاص بيك</span>
                         </a>
@@ -1832,13 +2578,6 @@
                 }
                 localStorage.setItem('theme', theme);
             }, [theme]);
-            
-            useEffect(() => {
-                if (window.lucide) {
-                    const timeoutId = setTimeout(() => window.lucide.createIcons(), 0);
-                    return () => clearTimeout(timeoutId);
-                }
-            }, [activeTab, modalMessage]);
 
             const handleThemeToggle = () => {
                 setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
@@ -1855,7 +2594,7 @@
                     case 'lectures': return <LecturesTab setModalMessage={setModalMessage} />;
                     case 'tasks': return <TasksTab setModalMessage={setModalMessage} />;
                     case 'bonus': return <BonusTab />;
-                    case 'share': return <ShareTab />;
+                    case 'more': return <MoreTab />;
                     default: return <HomeTab />;
                 }
             };
@@ -1955,9 +2694,6 @@
                     welcomeScreen.style.display = 'none';
                     if (appContent) {
                        appContent.classList.remove('hidden'); 
-                    }
-                    if (window.lucide) {
-                        window.lucide.createIcons();
                     }
                 }, 700);
             });
