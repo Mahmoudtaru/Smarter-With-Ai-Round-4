@@ -666,7 +666,7 @@
 
         const lecturesData = [
             { 
-                title: "الأسبوع 1", 
+                title: "الأسبوع 1: مقدمة لعالم الذكاء الاصطناعي", 
                 lectures: [
                     { title: "محاضرة الأسبوع الأول", url: "https://t.me/c/3331953900/6/78" }
                 ], 
@@ -674,7 +674,15 @@
                     { title: "شرح الأسبوع الأول", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-1/" }
                 ] 
             },
-            { title: "الأسبوع 2", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 2: البحث والتعلم بشكل أذكي", 
+                lectures: [
+                    { title: "محاضرة الأسبوع الثاني", url: "https://t.me/c/3331953900/6/182" }
+                ], 
+                guides: [
+                    { title: "شرح المحاضرة الثانية", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-2/" }
+                ] 
+            },
             { title: "الأسبوع 3", lectures: [], guides: [] },
             { title: "الأسبوع 4", lectures: [], guides: [] },
             { title: "الأسبوع 5", lectures: [], guides: [] },
@@ -690,7 +698,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 0; // Week 1 unlocked
+            const CURRENT_WEEK_INDEX = 1; // Week 2 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -905,14 +913,22 @@
         // TasksTab Component
         const tasksData = [
             { 
-                title: "تاسكات الأسبوع 1", 
+                title: "تاسكات الأسبوع 1: مقدمة لعالم الذكاء الاصطناعي", 
                 deadline: "18 أبريل 2026", 
                 tasks: [
                     "ادخل على ChatGPT أو Gemini، واستخدم مساعد \"Prompt Mood\" عشان تصيغ أمر احترافي في مجالك. اضغط (Share Conversation) وشاركنا الرابط هنا في تاب التاسكات."
                 ],
                 note: "التحدي: ماتكتفيش بالرد الأول! كمل نقاش مع الذكاء الاصطناعي وعدل عليه لحد ما تطلع بمنتج احترافي (الفرصة لربح Google Pro!)."
             },
-            { title: "تاسكات الأسبوع 2", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 2: البحث والتعلم بشكل أذكي", 
+                deadline: "25 أبريل 2026", 
+                tasks: [
+                    "ادخل على ChatGPT أو Gemini، واستخدم مساعد \"Search prompting Mood\" عشان تصيغ أمر احترافي لبحث شامل انت مهتم بيه في مجالك. اضغط (Share Conversation)، بعدين تبدأ محادثة جديدة بالأمر ده وتشاركنا بعد كده البحث الجميل اللي هيطلع معاك (سواء نصي أو في شكل موقع) هنا في تاب التاسكات.",
+                    "ادخل علي NotebookLM واعمل Notebook لحاجة بتتعلمها أو بتعلمها لغيرك."
+                ],
+                note: "التحدي بقي: تخصص البحث الشامل زي ما انت عاوز، ويسلام تخصص الـ Notebook! متكتفيش بالزراير الجاهزة، أوصف الاستايل، ضيف مقدمة وخاتمة، وطلع حاجة بشخصيتك!"
+            },
             { title: "تاسكات الأسبوع 3", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 4", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 5", deadline: "", tasks: [] },
@@ -1042,7 +1058,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 0;
+            const CURRENT_WEEK_INDEX = 1;
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
