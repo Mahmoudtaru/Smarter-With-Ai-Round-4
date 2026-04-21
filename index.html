@@ -525,11 +525,13 @@
                                 <span>روابط الوصول السريع</span>
                              </h4>
                              <div className="flex flex-col gap-3">
-                                <a href="https://t.me/+D5qrN2SQSC8wNDU0" target="_blank" className="btn-brand-primary w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md">
+                                {/* Main Group Button - Green */}
+                                <a href="https://t.me/+0aWJImkKfEEzN2Nk" target="_blank" className="btn-brand-primary w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md">
                                     <Icon name="send" className="w-6 h-6" />
                                     <span>مجتمع التليجرام (المناقشة العامة)</span>
                                 </a>
 
+                                {/* WhatsApp Button */}
                                 <a href="https://chat.whatsapp.com/C68FsQh5eYM7YaKAXCk9vQ" target="_blank" className="w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md text-white bg-green-600 hover:bg-green-700 transition-all">
                                     <Icon name="message-circle" className="w-6 h-6" />
                                     <span>جروب الواتساب</span>
@@ -1995,7 +1997,23 @@
                         </a>
                     </div>
 
+                    <div className="bg-green-50 dark:bg-slate-800/80 border-2 border-[--accent-green] rounded-xl p-6 text-center shadow-md transform transition-all hover:scale-[1.01]">
+                        <a 
+                            href="https://mahmoudtaru.github.io/Smarter-Workflows/" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-brand-primary hover:opacity-90 font-bold rounded-lg text-lg sm:text-xl px-8 py-3 text-center transition-transform transform hover:scale-105 inline-flex flex-wrap items-center justify-center gap-3 shadow-md w-full sm:w-auto"
+                        >
+                            <Icon name="route" className="w-6 h-6"/>
+                            <span>مسارات Workflows - أذكى بمساعدة الذكاء الاصطناعي</span>
+                        </a>
+                        <p className="mt-4 text-[--accent-navy] dark:text-gray-200 font-bold text-base sm:text-lg">
+                            مساراتك، أدواتك، مساعدينك في مكان واحد
+                        </p>
+                    </div>
+
                     <div className="space-y-4">
+                        
                         <Accordion 
                             title="أدوات الدبلومة (Smarter Tools)" 
                             isOpen={openAccordion === "smarter_tools"} 
