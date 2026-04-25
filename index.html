@@ -679,13 +679,22 @@
             { 
                 title: "الأسبوع 2: البحث والتعلم بشكل أذكي", 
                 lectures: [
-                    { title: "محاضرة الأسبوع الثاني", url: "https://t.me/c/3331953900/6/182" }
+                    { title: "محاضرة الأسبوع الثاني", url: "https://t.me/c/3331953900/6/182" },
+                    { title: "لايف الأسبوع الثاني", url: "https://t.me/c/3331953900/6/262" }
                 ], 
                 guides: [
                     { title: "شرح المحاضرة الثانية", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-2/" }
                 ] 
             },
-            { title: "الأسبوع 3", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 3: العروض التقديمية والتصميم البصري", 
+                lectures: [
+                    { title: "محاضرة الأسبوع الثالث", url: "https://t.me/c/3331953900/6/369" }
+                ], 
+                guides: [
+                    { title: "شرح الأسبوع الثالث", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-weak-3/" }
+                ] 
+            },
             { title: "الأسبوع 4", lectures: [], guides: [] },
             { title: "الأسبوع 5", lectures: [], guides: [] },
             { title: "الأسبوع 6", lectures: [], guides: [] },
@@ -700,7 +709,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 1; // Week 2 unlocked
+            const CURRENT_WEEK_INDEX = 2; // Week 3 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -931,7 +940,50 @@
                 ],
                 note: "التحدي بقي: تخصص البحث الشامل زي ما انت عاوز، ويسلام تخصص الـ Notebook! متكتفيش بالزراير الجاهزة، أوصف الاستايل، ضيف مقدمة وخاتمة، وطلع حاجة بشخصيتك!"
             },
-            { title: "تاسكات الأسبوع 3", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 3: العروض التقديمية والتصميم البصري", 
+                deadline: "", 
+                tasks: [
+                    {
+                        text: "1. تحدي العروض التقديمية 📽️",
+                        details: [
+                            {
+                                title: "عندك طريقين، اختار اللي يريحك:",
+                                items: [
+                                    "تجديد القديم: لو عندك بريزنتيشن قديمة كنت عاملها بالطريقة التقليدية، ارفع الداتا بتاعتها لأي أداة (Gamma, Z.ai, أو NotebookLM) وقارن بين النتيجة القديمة والنتيجة 'الاحترافية' اللي الذكاء الاصطناعي هيطلعها لك.",
+                                    "إبداع من الصفر: لو معاك داتا أو معلومات لمشروع جديد، اعمل بريزنتيشن شيك بأي طريقة تعجبك من اللي شرحناهم، وورينا الجمال!"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        text: "2. تحدي الإنفوجرافيك 📊",
+                        details: [
+                            {
+                                title: "حول أي معلومة دسمة لشكل بصري مريح للعين:",
+                                items: [
+                                    "استخدم NotebookLM أو أي أداة توليد صور عشان تعمل 'إنفوجرافيك' بيشرح موضوع معين.",
+                                    "💡 تريكة صايعة: لو الأداة اللي استخدمتها حطت 'لوجو' خاص بيها، ياريت تحذفه قبل ما تشاركنا الصورة عشان شغلك يبان احترافي 100%."
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        text: "3. تحدي الخيال والبصريات 🎨",
+                        details: [
+                            {
+                                title: "هنا بقى الملعب بتاعك، شاركنا بصورة واحدة (على الأقل) من إبداعك:",
+                                items: [
+                                    "لوجو لنفسك، بوستر لإعلان، أو صورة شخصية ليك بستايل جديد.",
+                                    "ممكن تروح لأبعد من كده وتعمل قصة مكونة من كذا مشهد، أو كوميك لذيذ، أو مشهد خيالي بيعبر عن فكرة في دماغك.",
+                                    "👨‍👩‍👧‍👦 تريكة العيلة: لو إنت أب أو أم، اقعد مع ابنك/بنتك وتفكروا مع بعض في فكرة أو مشهد معين مثلا كائن فضائي أو بطل خارق وصمموه سوا، وبعدين ممكن تحولوا التصميم لـ (أبيض وأسود) وتطبعه عشان يلونوه بنفسهم.. متخيل المتعة؟"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                note: "🎯 تحدي الأسبوع: يلا بينا نطبق ونبهر العالم! المحاضرة خلصت بس المتعة لسه بتبدأ. عشان نضمن إنك بقيت متمكن في الأدوات اللي شرحناها، مطلوب منك تنفذ الـ 3 تاسكات دول وتشاركنا نتيجتك."
+            },
             { title: "تاسكات الأسبوع 4", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 5", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 6", deadline: "", tasks: [] },
@@ -1060,7 +1112,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 1;
+            const CURRENT_WEEK_INDEX = 2; // Week 3 Unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
