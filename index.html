@@ -2018,10 +2018,10 @@
                     >
                         <div className="p-5 border-t border-gray-200">
                             {category.subCategories ? (
-                                <div className="space-y-4 pt-2">
+                                <div className="space-y-5 pt-2">
                                     {category.subCategories.map((sub, sIdx) => (
                                         <div key={sIdx}>
-                                            <h5 className="font-bold text-[--accent-navy] dark:text-[--accent-green] mb-2">{sub.title}</h5>
+                                            <h5 className="font-bold text-[--accent-green] text-lg mb-2 border-b border-gray-100 dark:border-gray-700 pb-1">{sub.title}</h5>
                                             <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
                                                 {sub.tools.map((tool, index) => (
                                                     <li key={index} className="hover:text-[--accent-green] transition-colors">
