@@ -1235,13 +1235,44 @@
                 ] 
             },
             { 
-                title: "أوامر جاهزة للصور", 
-                icon: "images", 
-                tools: [
-                    { name: "ChatGPT Image Art", url: "https://www.chatgptimage.art/" },
-                    { name: "Banana Prompts", url: "https://www.bananaprompts.xyz/explore" },
-                    { name: "Nano Banana Prompt", url: "https://nanobananaprompt.org/prompts/" }
-                ] 
+                title: "أوامر جاهزة ومراجع (Prompts)", 
+                icon: "library", 
+                subCategories: [
+                    {
+                        title: "عامة (General)",
+                        tools: [
+                            { name: "AIPRM Prompts", url: "https://www.aiprm.com/prompts/" },
+                            { name: "Promptifex", url: "https://www.promptifex.com/en/home" },
+                            { name: "Prompt Engineering Guide (Notion)", url: "https://www.notion.so/Prompt-Engineering-Guide-29979d9a636781848af8d64bd81ea5b6#29979d9a636781c59b04f350e3e1f574" },
+                            { name: "Loop Marketing Prompt Library", url: "https://offers.hubspot.com/view/loop-marketing-prompts?utm_campaign=21092760-Global%20%7C%20Loop%20Marketing%20Prompt%20Library&utm_medium=email&utm_content=378092508&utm_source=hs_email" }
+                        ]
+                    },
+                    {
+                        title: "صور (Images)",
+                        tools: [
+                            { name: "ChatGPT Image Art", url: "https://www.chatgptimage.art/" },
+                            { name: "Banana Prompts", url: "https://www.bananaprompts.xyz/explore" },
+                            { name: "Nano Banana Prompt", url: "https://nanobananaprompt.org/prompts/" },
+                            { name: "GPT Image 2 Prompts", url: "https://youmind.com/gpt-image-2-prompts" },
+                            { name: "MeiGen (Nano Banana Prompts)", url: "https://www.meigen.ai/" }
+                        ]
+                    },
+                    {
+                        title: "فيديو (Video)",
+                        tools: [
+                            { name: "Seedance 2.0 Prompts", url: "https://youmind.com/seedance-2-0-prompts" },
+                            { name: "VideoGen Prompts", url: "https://kittl.notion.site/videogenprompts" }
+                        ]
+                    },
+                    {
+                        title: "كتب ومراجع هندسة الأوامر",
+                        tools: [
+                            { name: "500 أمر لشات جي بي تي للبحوث الأكاديمية", url: "https://drive.google.com/file/d/122N6rG3T5DGWuOvAnHeHpbuBGggGQOFu/view?usp=sharing" },
+                            { name: "هندسة الأوامر باللغة العربية من OpenAI", url: "https://drive.google.com/file/d/1814Vc2lFOZhVq1d2BJQtzH2dsNcvj4IB/view?usp=sharing" },
+                            { name: "Prompt Engineering (From Google)", url: "https://drive.google.com/file/d/1BNQ1E91oQVWvPImMZK5G5QOHI_4KfDBn/view?usp=sharing" }
+                        ]
+                    }
+                ]
             },
             { 
                 title: "صوت", 
@@ -1986,13 +2017,30 @@
                         style={{ maxHeight: isOpen ? '5000px' : '0' }}
                     >
                         <div className="p-5 border-t border-gray-200">
-                            <ul className="list-disc list-inside space-y-2 pt-4 text-text-dark">
-                                {category.tools.map((tool, index) => (
-                                    <li key={index} className="hover:text-[--accent-green]">
-                                        <a href={tool.url} target="_blank" rel="noopener noreferrer">{tool.name}</a>
-                                    </li>
-                                ))}
-                            </ul>
+                            {category.subCategories ? (
+                                <div className="space-y-4 pt-2">
+                                    {category.subCategories.map((sub, sIdx) => (
+                                        <div key={sIdx}>
+                                            <h5 className="font-bold text-[--accent-navy] dark:text-[--accent-green] mb-2">{sub.title}</h5>
+                                            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                                                {sub.tools.map((tool, index) => (
+                                                    <li key={index} className="hover:text-[--accent-green] transition-colors">
+                                                        <a href={tool.url} target="_blank" rel="noopener noreferrer">{tool.name}</a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <ul className="list-disc list-inside space-y-2 pt-2 text-gray-700 dark:text-gray-300">
+                                    {category.tools.map((tool, index) => (
+                                        <li key={index} className="hover:text-[--accent-green] transition-colors">
+                                            <a href={tool.url} target="_blank" rel="noopener noreferrer">{tool.name}</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     </div>
                 </div>
