@@ -696,7 +696,15 @@
                     { title: "شرح الأسبوع الثالث", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-weak-3/" }
                 ] 
             },
-            { title: "الأسبوع 4", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 4: صناعة وتعديل الصور", 
+                lectures: [
+                    { title: "محاضرة الأسبوع الرابع", url: "https://t.me/c/3331953900/6/524" }
+                ], 
+                guides: [
+                    { title: "شرح الأسبوع الرابع", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-week-4/" }
+                ] 
+            },
             { title: "الأسبوع 5", lectures: [], guides: [] },
             { title: "الأسبوع 6", lectures: [], guides: [] },
             { title: "الأسبوع 7", lectures: [], guides: [] },
@@ -710,7 +718,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 2; // Week 3 unlocked
+            const CURRENT_WEEK_INDEX = 3; // Week 4 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -985,7 +993,27 @@
                 ],
                 note: "🎯 تحدي الأسبوع: يلا بينا نطبق ونبهر العالم! المحاضرة خلصت بس المتعة لسه بتبدأ. عشان نضمن إنك بقيت متمكن في الأدوات اللي شرحناها، مطلوب منك تنفذ الـ 3 تاسكات دول وتشاركنا نتيجتك."
             },
-            { title: "تاسكات الأسبوع 4", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 4: صناعة وتعديل الصور", 
+                deadline: "", 
+                tasks: [
+                    {
+                        text: "إحنا مش طالبين حاجة بروفيشنال معقدة، إحنا محتاجينك 'تدوس' في الصور وتجرب إيدك في كانفا (محتاجينك تدمج مهاراتك الجديدة في إنشاء الصور بالذكاء الاصطناعي مع خبرتك الحالية في كانفا وتبهرنا بنتايجك):",
+                        details: [
+                            {
+                                title: "أمثلة لاستخدامات ممكن تعملها أو تلهمك لأفكار تانية:",
+                                items: [
+                                    "استخدم تصميم عملته بالذكاء الاصطناعي وعدل عليه بكانفا (سواء حذف خلفية لو لوجو مثلا، سواء تغيير كلام أو عناصر داخل الصورة أو أي استخدام انت محتاجه = حتة التجربة والتطبيق بتاعتك انت).",
+                                    "استخدم أداة الـ Bulk Create عشان تعمل شهادات تقدير لمجموعة طلبة أو يمكن أصدقاء ليك :).",
+                                    "هات إنفوجرافيك أو بريزنتيشن عليها لوجو (زي NotebookLM)، واستخدم الـ Magic Eraser عشان تمسح اللوجو بشياكة.",
+                                    "هات صورة جودتها ضعيفة، وجرب تعملها Upscale عشان تعلي الجودة بتاعتها."
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                note: "📝 التاسكات المطلوبة (عشان نثبت المعلومة): المطلوب منك تنفذ تجربة واحدة على الأقل من الأمثلة وتشاركنا نتيجتك."
+            },
             { title: "تاسكات الأسبوع 5", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 6", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 7", deadline: "", tasks: [] },
@@ -1113,7 +1141,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 2; // Week 3 Unlocked
+            const CURRENT_WEEK_INDEX = 3; // Week 4 Unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
