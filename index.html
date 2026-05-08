@@ -705,7 +705,15 @@
                     { title: "شرح الأسبوع الرابع", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-week-4/" }
                 ] 
             },
-            { title: "الأسبوع 5", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 5: صناعة الفيديوهات والتحريك", 
+                lectures: [
+                    { title: "محاضرة الأسبوع الخامس", url: "https://t.me/c/3331953900/6/559" }
+                ], 
+                guides: [
+                    { title: "شرح المحاضرة", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-5/" }
+                ] 
+            },
             { title: "الأسبوع 6", lectures: [], guides: [] },
             { title: "الأسبوع 7", lectures: [], guides: [] },
             { title: "الأسبوع 8", lectures: [], guides: [] },
@@ -718,7 +726,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 3; // Week 4 unlocked
+            const CURRENT_WEEK_INDEX = 4; // Week 5 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -1014,7 +1022,35 @@
                 ],
                 note: "📝 التاسكات المطلوبة (عشان نثبت المعلومة): المطلوب منك تنفذ تجربة واحدة على الأقل من الأمثلة وتشاركنا نتيجتك."
             },
-            { title: "تاسكات الأسبوع 5", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 5: صناعة الفيديوهات والتحريك", 
+                deadline: "", 
+                tasks: [
+                    {
+                        text: "عشان تطبق اللي اتعلمناه وتطلع بنتيجة تبهرك، بلاش تدخل تشتغل بعشوائية. دي خريطة طريق مرتبة خطوة بخطوة، مليانة أفكار عشان تطلق خيالك وتجرب كتير:",
+                        details: [
+                            {
+                                title: "🧭 أولاً: اسأل نفسك (حدد بوصلتك)",
+                                items: [
+                                    "ستايل الفيديو إيه؟ (عايزه سينمائي واقعي، ولا أنيميشن، ولا 3D؟) ⬅️ الإجابة دي هتحدد الكلمات اللي هتكتبها في البرومبت بتاعك.",
+                                    "مين بطل القصة؟ (محتاج شخصية موحدة تظهر في كل المشاهد، ولا شخصيات مختلفة؟) ⬅️ لو شخصية موحدة، يبقى لازم تستخدم صورتها كـ (Reference) في كل مشهد عشان تحافظ على هويتها.",
+                                    "حركة الكاميرا والمكان؟ (هل المكان ثابت والكاميرا بتلف، ولا المشهد كله بيتغير؟) ⬅️ جرب تستخدم تكنيك الـ (First & Last Frame).",
+                                    "الصوت إيه نظامه؟ (فويس أوفر شغال في الخلفية، ولا محتاج تزامن شفاه Lip-sync وحركة جسم؟) ⬅️ افتكر تريكة 'الكتابة الصوتية والتشكيل' عشان تظبط نطق الـ AI."
+                                ]
+                            },
+                            {
+                                title: "📝 ثانياً: ابدأ التنفيذ بالترتيب (خطوات العمل)",
+                                items: [
+                                    "الخطوة 1: الفكرة والاتجاه (Ideation): إنت قدامك طريقين يا العصف الذهني وتتناقش مع AI، أو التغذية البصرية (الهندسة العكسية) لفيديو عاجبك وتطلب من Gemini يحلله ويديك برومبت زيه.",
+                                    "الخطوة 2: توليد المشاهد (Generation): ادخل على Flow وابدأ طلع صور المشاهد الأول (عشان تضمن ثبات الشخصية)، وبعدين حول الصور دي لفيديوهات باستخدام زوايا الكاميرا المناسبة.",
+                                    "الخطوة 3: أفكار برة الصندوق: جرب دمج الـ AI بأفكار زي (أنيميشن اللوجو، أنيميشن العروض Slides، أنت البطل بصورتك، أو تعمل برومو لخدماتك بتزامن الشفاه)."
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                note: "💡 سر الاحتراف: التجربة هي اللي هتعلمك. جرب برومبتات مختلفة، غير الستايل، والعب في زوايا الكاميرا لحد ما توصل للـ (Masterpiece) بتاعتك!"
+            },
             { title: "تاسكات الأسبوع 6", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 7", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 8", deadline: "", tasks: [] },
@@ -1141,7 +1177,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 3; // Week 4 Unlocked
+            const CURRENT_WEEK_INDEX = 4; // Week 5 Unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
@@ -1252,14 +1288,16 @@
                 title: "صور", 
                 icon: "image", 
                 tools: [
+                    { name: "Flow", url: "https://labs.google/fx/tools/flow" },
+                    { name: "ChatGPT Images", url: "https://chatgpt.com/images" },
+                    { name: "Labnana", url: "https://labnana.com/home" },
                     { name: "LMArena.ai", url: "https://lmarena.ai/" },
                     { name: "Meta AI", url: "https://www.meta.ai/" },
                     { name: "Lovart", url: "https://www.lovart.ai/home" },
                     { name: "Genspark", url: "https://www.genspark.ai/" },
                     { name: "Ideogram", url: "https://ideogram.ai/" }, 
                     { name: "Gemini", url: "https://gemini.google.com/" },
-                    { name: "Copilot", url: "https://copilot.microsoft.com/" },
-                    { name: "Flow", url: "https://labs.google/fx/tools/flow" }
+                    { name: "Copilot", url: "https://copilot.microsoft.com/" }
                 ] 
             },
             { 
@@ -1319,13 +1357,14 @@
                 title: "فيديو", 
                 icon: "video", 
                 tools: [
+                    { name: "Flow", url: "https://labs.google/fx/tools/flow/project/ce8fcb35-6af4-4e51-9971-32a76da8aeaf" },
+                    { name: "Google Vids", url: "http://vids.new/" },
                     { name: "GeminiGen AI", url: "https://geminigen.ai/" },
                     { name: "Grok", url: "https://grok.com/" },
                     { name: "Meta AI", url: "https://www.meta.ai/" },
                     { name: "Wan", url: "https://create.wan.video/explore" },
                     { name: "Pixverse", url: "https://app.pixverse.ai/onboard" },
                     { name: "Runway", url: "https://runwayml.com/" },
-                    { name: "Flow", url: "https://labs.google/fx/tools/flow/project/ce8fcb35-6af4-4e51-9971-32a76da8aeaf" },
                     { name: "Kling", url: "https://app.klingai.com/global/video-to-lip/new" },
                     { name: "Pippit", url: "https://www.pippit.ai/home-page?" },
                     { name: "Higgsfield", url: "https://higgsfield.ai/" },
