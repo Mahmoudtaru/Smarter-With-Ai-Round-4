@@ -714,7 +714,15 @@
                     { title: "شرح المحاضرة", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-5/" }
                 ] 
             },
-            { title: "الأسبوع 6", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 6: السحر الصوتي والمزامنة", 
+                lectures: [
+                    { title: "محاضرة الأسبوع السادس", url: "https://t.me/c/3331953900/6/571" }
+                ], 
+                guides: [
+                    { title: "شرح المحاضرة السادسة", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-week-6/" }
+                ] 
+            },
             { title: "الأسبوع 7", lectures: [], guides: [] },
             { title: "الأسبوع 8", lectures: [], guides: [] },
             { 
@@ -726,7 +734,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 4; // Week 5 unlocked
+            const CURRENT_WEEK_INDEX = 5; // Week 6 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -1051,7 +1059,35 @@
                 ],
                 note: "💡 سر الاحتراف: التجربة هي اللي هتعلمك. جرب برومبتات مختلفة، غير الستايل، والعب في زوايا الكاميرا لحد ما توصل للـ (Masterpiece) بتاعتك!"
             },
-            { title: "تاسكات الأسبوع 6", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 6: السحر الصوتي والمزامنة", 
+                deadline: "", 
+                tasks: [
+                    {
+                        text: "عشان تطبق اللي اتعلمناه في السحر الصوتي والمزامنة وتطلع بنتيجة تبهرك، بلاش تدخل تشتغل بعشوائية. دي خريطة طريق مرتبة خطوة بخطوة، مليانة أفكار عشان تطلق خيالك وتجرب كتير:",
+                        details: [
+                            {
+                                title: "🧭 أولاً: اسأل نفسك (حدد بوصلتك)",
+                                items: [
+                                    "نبرة الصوت والمشاعر إيه؟ (عايزه درامي غامض، ولا إعلان حماسي، ولا شرح هادي؟) ⬅️ الإجابة دي هتحدد هتستخدم (Tags) في Google AI Studio ولا هتروح لـ ElevenLabs.",
+                                    "مين بطل القصة؟ (مذيع واحد بيشرح، ولا محادثة وبودكاست بين اتنين؟) ⬅️ لو بودكاست أو حوار، يبقى أداة الـ (Google AI Studio) من جوجل هي الحل السحري.",
+                                    "هتظهر بوشك ولا أفاتار؟ (هتصمم أفاتار جاهز على الموقع، أو صورة جاهزة معاك، ولا هترفع فيديو مرجعي ليك؟) ⬅️ افتكر تريكة رفع 'فيديو' ليك بتتحرك فيه بدل الصورة الثابتة عشان لغة الجسد تطلع طبيعية جداً على HeyGen.",
+                                    "في لغات تانية محتاجة دبلجة؟ (عندك فيديو أجنبي وعايزه ينطق عربي ويزامن حركة الشفايف؟) ⬅️ يبقى إنت محتاج ميزة الـ Video/Audio Dubbing مع تفعيل أوبشن الـ (Dynamic Duration)."
+                                ]
+                            },
+                            {
+                                title: "📝 ثانياً: ابدأ التنفيذ بالترتيب (خطوات العمل)",
+                                items: [
+                                    "الخطوة 1: الفكرة والسكريبت (Ideation): استخدم مساعد (Voice Mood) عشان يصيغلك المشهد، أو اتعامل مع الـ AI كأنه طفل واكتب الكلمة بالعامية 'صوتياً' مع التشكيل عشان تضمن نطق صح 100%.",
+                                    "الخطوة 2: توليد الصوت (Generation): خد السكريبت وروح للمنصة المناسبة: ElevenLabs (للمشاعر)، أو Minimax (للاستنساخ المجاني)، أو Google AI Studio (للبودكاست السريع).",
+                                    "الخطوة 3: أفكار برة الصندوق: جرب تعمل 'البودكاستر الذكي' بين اتنين، أو 'استنساخك الرقمي' على Minimax، أو 'مغير الصوت' في ElevenLabs، أو 'أصوات المشاهير' في Fish Audio، أو 'الدبلجة السحرية لعروضك' باستخدام Google Slides و HeyGen."
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                note: "💡 سر الاحتراف: الذكاء الاصطناعي بيوفر عليك سنين من التعلم وبيحطلك استوديو كامل بين إيديك، بس السر دايماً مش في الأداة.. السر فيك إنت! التجربة هي اللي هتعلمك وتفرقك عن غيرك. جرب، اغلط، العب في التشكيل، واسمع كتير لحد ما تطلع نتيجة تخطف العين والودن.. وخليكم دايماً Smarter With AI! 🚀"
+            },
             { title: "تاسكات الأسبوع 7", deadline: "", tasks: [] },
             { title: "تاسكات الأسبوع 8", deadline: "", tasks: [] },
             { 
@@ -1177,7 +1213,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 4; // Week 5 Unlocked
+            const CURRENT_WEEK_INDEX = 5; // Week 6 Unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
