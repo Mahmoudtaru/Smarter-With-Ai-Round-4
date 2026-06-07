@@ -723,7 +723,15 @@
                     { title: "شرح المحاضرة السادسة", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-week-6/" }
                 ] 
             },
-            { title: "الأسبوع 7", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 7: صناعة المساعدين الشخصيين (Custom GPTs / Gems)", 
+                lectures: [
+                    { title: "محاضرة الأسبوع السابع", url: "https://t.me/c/3331953900/6/664" }
+                ], 
+                guides: [
+                    { title: "شرح المحاضرة السابعة", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-7/" }
+                ] 
+            },
             { title: "الأسبوع 8", lectures: [], guides: [] },
             { 
                 title: "الأسبوع 9: مشروع التخرج", 
@@ -734,7 +742,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 5; // Week 6 unlocked
+            const CURRENT_WEEK_INDEX = 6; // Week 7 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -1088,7 +1096,35 @@
                 ],
                 note: "💡 سر الاحتراف: الذكاء الاصطناعي بيوفر عليك سنين من التعلم وبيحطلك استوديو كامل بين إيديك، بس السر دايماً مش في الأداة.. السر فيك إنت! التجربة هي اللي هتعلمك وتفرقك عن غيرك. جرب، اغلط، العب في التشكيل، واسمع كتير لحد ما تطلع نتيجة تخطف العين والودن.. وخليكم دايماً Smarter With AI! 🚀"
             },
-            { title: "تاسكات الأسبوع 7", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 7: صناعة المساعدين الشخصيين", 
+                deadline: "", 
+                tasks: [
+                    {
+                        text: "عشان تطبق اللي اتعلمناه وتطلع بنتيجة توفر عليك مئات الساعات، دي خريطة طريق مرتبة خطوة بخطوة عشان تبني جيشك الخاص من المساعدين الشخصيين:",
+                        details: [
+                            {
+                                title: "الخطوة 1: البحث والتقييم (هل المساعد موجود؟)",
+                                items: [
+                                    "قبل ما تبدأ تبني مساعد من الصفر وتضيع وقت، فكر الأول: هل المساعد اللي أنا محتاجه موجود بالفعل؟",
+                                    "ابحث في المساعدين الجاهزين (Pre-made) زي Storybook في جيميناي، أو قلب في متجر GPTs.",
+                                    "افتح تطبيق المسارات الخاص بالدبلومة، احتمال كبير تلاقي دكتور محمود عامل المساعد ده ومجهزهولك.",
+                                    "اختبار الكفاءة: لو لقيت المساعد، ماتثقش فيه عمياني. ادخله وقوله طبيعة شغلك واطلب منه: 'بيع لي نفسك وقولي هتفيدني إزاي في مجالي' عشان تتأكد إنه متفصل على مقاسك."
+                                ]
+                            },
+                            {
+                                title: "الخطوة 2: بناء مساعدك المخصص (Custom Gem)",
+                                items: [
+                                    "لو دورت ومالقيتش اللي يرضيك، أو عندك شغل خاص بيك مش عايز تشرحه كل شوية، يبقى جه وقت البناء: روح للمساعد بتاعنا Gem Builder Mood.",
+                                    "اشرح له فكرتك ببساطة، واديله المرجع (Reference)؛ يعني قوله أنا هديلك ملفات تعتمد عليها كـ 'ستايل كتابة'، أو ملفات تعتمد عليها كـ 'قاعدة معرفة Knowledge' يجاوب منها بس.",
+                                    "انسخ الـ (Instructions) اللي هيطلعهالك، وافتح (New Gem) وابني مساعدك في ثواني، وشارك اللينك بتاعه معانا على الجروب!"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                note: "💡 التحدي: شاركنا رابط المساعد (Gem / GPT) اللي بنيته على جروب التليجرام عشان كلنا نستفيد منه!"
+            },
             { title: "تاسكات الأسبوع 8", deadline: "", tasks: [] },
             { 
                 title: "الأسبوع 9: مشروع التخرج", 
@@ -1213,7 +1249,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 5; // Week 6 Unlocked
+            const CURRENT_WEEK_INDEX = 6; // Week 7 Unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
