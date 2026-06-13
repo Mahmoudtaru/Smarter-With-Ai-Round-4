@@ -732,7 +732,15 @@
                     { title: "شرح المحاضرة السابعة", url: "https://mahmoudtaru.github.io/Smarter-With-Ai-Round-4-Week-7/" }
                 ] 
             },
-            { title: "الأسبوع 8", lectures: [], guides: [] },
+            { 
+                title: "الأسبوع 8: البرمجة والتطبيقات (Vibe Coding)", 
+                lectures: [
+                    { title: "محاضرة الأسبوع الثامن", url: "https://t.me/c/3331953900/6/670" }
+                ], 
+                guides: [
+                    { title: "شرح الأسبوع الثامن", url: "https://mahmoudtaru.github.io/smarter-with-ai-round-4-week-8/" }
+                ] 
+            },
             { 
                 title: "الأسبوع 9: مشروع التخرج", 
                 projectDetails: graduationProjectDetails,
@@ -742,7 +750,7 @@
 
         const LECTURE_COMPLETION_KEY = 'lectureCompletionStatusR4';
         const LecturesTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 6; // Week 7 unlocked
+            const CURRENT_WEEK_INDEX = 7; // Week 8 unlocked
             const [openWeek, setOpenWeek] = useState(lecturesData[CURRENT_WEEK_INDEX]?.title || null);
             const [isAvailabilityOpen, setAvailabilityOpen] = useState(false);
             const [completedLectures, setCompletedLectures] = useState(() => {
@@ -1125,7 +1133,27 @@
                 ],
                 note: "💡 التحدي: شاركنا رابط المساعد (Gem / GPT) اللي بنيته على جروب التليجرام عشان كلنا نستفيد منه!"
             },
-            { title: "تاسكات الأسبوع 8", deadline: "", tasks: [] },
+            { 
+                title: "تاسكات الأسبوع 8: البرمجة والتطبيقات (Vibe Coding)", 
+                deadline: "", 
+                tasks: [
+                    {
+                        text: "بعد المحاضرة، انت بقي معاك المعرفة والقدرة إنك تبرمج أدواتك بنفسك. عشان تدخل تحدي أفضل تطبيق/موقع على الجروب، دي التاسكات المطلوبة منك:",
+                        details: [
+                            {
+                                title: "المهام المطلوبة (نفذ ما يناسبك):",
+                                items: [
+                                    "ابني موقعك أو البورتفوليو بتاعك: استخدم (Gemini Canvas) أو (Claude) عشان تبني موقع بيعرض خدماتك أو بورتفوليو لخبراتك.",
+                                    "ارفع الموقع وشاركه: استخدم GitHub لرفع كود الـ HTML، وشاركنا الرابط على الجروب.",
+                                    "أبليكيشن مهامك اليومية: ابتكر فكرة أبليكيشن يسهل عليك شغلك (متابعة عادات، حساب مصاريف، داشبورد) وصممه بالـ AI وشاركنا تجربتك.",
+                                    "💡 ملحوظة: تقدر تستعين بالمساعد الشخصي (Web/App Mood) سواء إنه يساعدك في الفكرة أو التنفيذ."
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                note: "🚀 خطوة بخطوة: المساعد الشخصي هيسهل عليك جداً الفكرة، وكتابة الكود، وتصحيح الأخطاء، لحد ما توصل لنتيجة احترافية!"
+            },
             { 
                 title: "الأسبوع 9: مشروع التخرج", 
                 deadline: "", 
@@ -1249,7 +1277,7 @@
         };
 
         const TasksTab = ({ setModalMessage }) => {
-            const CURRENT_WEEK_INDEX = 6; // Week 7 Unlocked
+            const CURRENT_WEEK_INDEX = 7; // Week 8 Unlocked
             const [completedTasks, setCompletedTasks] = useState(() => {
                 try {
                     const saved = localStorage.getItem(TASK_COMPLETION_KEY);
@@ -1484,6 +1512,17 @@
                     { name: "z.ai", url: "https://chat.z.ai/" },
                     { name: "Kimi", url: "https://www.kimi.com/" }
                 ] 
+            },
+            {
+                title: "Vibe Coding",
+                icon: "code",
+                tools: [
+                    { name: "Gemini", url: "https://gemini.google.com/" },
+                    { name: "Claude", url: "https://claude.ai/" },
+                    { name: "Google AI Studio", url: "https://aistudio.google.com/" },
+                    { name: "Canva", url: "https://www.canva.com/" },
+                    { name: "Lovable", url: "https://lovable.dev/" }
+                ]
             },
             {
                 title: "أدوات مساعدة (صوت وفيديو)",
