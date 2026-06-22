@@ -19,6 +19,14 @@
     
     <!-- Babel for JSX transpilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+        // Force Babel to use the classic JSX transform to prevent 'import' statement errors in the browser
+        Babel.registerPreset('react-classic', {
+            presets: [
+                [Babel.availablePresets.react, { runtime: "classic" }]
+            ]
+        });
+    </script>
 
     <script>
         // Set theme on initial load to prevent FOUC
@@ -254,7 +262,7 @@
 
     <div id="root" class="hidden"></div>
     
-    <script type="text/babel">
+    <script type="text/babel" data-presets="env,react-classic">
         const { useState, useEffect, useCallback, useRef, useMemo } = React;
 
         // Icon Component - Optimized to prevent lag (Isolated creation)
@@ -269,7 +277,6 @@
                     wrapperRef.current.innerHTML = ''; 
                     wrapperRef.current.appendChild(i);
                     
-                    // Fast and isolated icon creation! Doesn't scan the whole DOM.
                     window.lucide.createIcons({ root: wrapperRef.current });
 
                     const svg = wrapperRef.current.querySelector('svg');
@@ -410,7 +417,7 @@
             );
         };
 
-        // Hero Tool Card Component (For Smarter Tools Section)
+        // Hero Tool Card Component
         const HeroToolCard = ({ title, icon, description, featuresTitle, features, linkUrl, linkLabel }) => (
             <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border-l-4 border-l-[--accent-green] border border-gray-200 dark:border-gray-700 shadow-sm transition-all hover:shadow-md">
                 <div className="flex flex-col sm:flex-row sm:items-start gap-4">
@@ -517,21 +524,19 @@
                     </Reminder>
                     <div className="content-card p-6 rounded-lg shadow-md">
                         <h3 className="page-title text-2xl sm:text-3xl font-bold mb-4 text-center">أهلاً بك في دبلومة Smarter With AI - الدفعة الرابعة!</h3>
-                        <p className="text-center text-gray-700 dark:text-gray-700 mb-8">يسعدنا انضمامك إلينا في هذه الرحلة الشيقة لاستكشاف عالم الذكاء الاصطناعي وكيفية الاستفادة منه في حياتك اليومية والمهنية.</p>
+                        <p className="text-center text-gray-700 dark:text-gray-300 mb-8">يسعدنا انضمامك إلينا في هذه الرحلة الشيقة لاستكشاف عالم الذكاء الاصطناعي وكيفية الاستفادة منه في حياتك اليومية والمهنية.</p>
                         
-                        <div className="mb-8 bg-gray-50 dark:bg-gray-100 p-4 rounded-xl border border-gray-200">
+                        <div className="mb-8 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
                              <h4 className="section-header text-xl font-bold mb-4 flex items-center justify-center gap-2">
                                 <Icon name="link" />
                                 <span>روابط الوصول السريع</span>
                              </h4>
                              <div className="flex flex-col gap-3">
-                                {/* Main Group Button - Green */}
                                 <a href="https://t.me/+0aWJImkKfEEzN2Nk" target="_blank" className="btn-brand-primary w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md">
                                     <Icon name="send" className="w-6 h-6" />
                                     <span>مجتمع التليجرام (المناقشة العامة)</span>
                                 </a>
 
-                                {/* WhatsApp Button */}
                                 <a href="https://chat.whatsapp.com/C68FsQh5eYM7YaKAXCk9vQ" target="_blank" className="w-full py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold text-lg shadow-md text-white bg-green-600 hover:bg-green-700 transition-all">
                                     <Icon name="message-circle" className="w-6 h-6" />
                                     <span>جروب الواتساب</span>
@@ -574,9 +579,9 @@
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-6 mb-6">
-                           <div className="bg-white dark:bg-white p-5 rounded-xl shadow-lg transition-all hover:shadow-xl border-2 border-[--accent-green]">
+                           <div className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-lg transition-all hover:shadow-xl border-2 border-[--accent-green]">
                                <h4 className="section-header text-xl font-bold mb-4 flex items-center gap-2"><Icon name="info" /><span>نظام الدبلومة</span></h4>
-                                <ul className="space-y-3 text-gray-700">
+                                <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                                     <li className="flex items-start gap-3"><Icon name="check-circle-2" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span>9 أسابيع من التعلم المركز والمكثف.</span></li>
                                     <li className="flex items-start gap-3"><Icon name="check-circle-2" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span>محتوى أسبوعي: فيديوهات، أدلة، وتاسكات.</span></li>
                                     <li className="flex items-start gap-3"><Icon name="check-circle-2" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span>تعلم فعال بأحدث أدوات الذكاء الاصطناعي.</span></li>
@@ -584,9 +589,9 @@
                                     <li className="flex items-start gap-3"><Icon name="check-circle-2" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span>مشروع تخرج نهائي لتطبيق ما تعلمته.</span></li>
                                 </ul>
                            </div>
-                           <div className="bg-white dark:bg-white p-5 rounded-xl shadow-lg transition-all hover:shadow-xl border-2 border-[--accent-green]">
+                           <div className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-lg transition-all hover:shadow-xl border-2 border-[--accent-green]">
                                 <h4 className="section-header text-xl font-bold mb-4 flex items-center gap-2"><Icon name="layout-grid" /><span>أقسام التطبيق</span></h4>
-                                <ul className="space-y-3 text-gray-700">
+                                <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                                      <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">الرئيسية:</span> نظرة عامة على الدبلومة والروابط الهامة.</span></li>
                                      <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">المحاضرات:</span> جميع محاضرات وأدلة الدبلومة.</span></li>
                                      <li className="flex items-start gap-3"><Icon name="arrow-left-circle" className="w-5 h-5 text-[--accent-green] mt-1 flex-shrink-0" /><span><span className="font-bold">التاسكات:</span> المهام العملية الأسبوعية.</span></li>
@@ -601,7 +606,7 @@
                             isOpen={isInstallAccordionOpen}
                             onToggle={() => setInstallAccordionOpen(!isInstallAccordionOpen)}
                         >
-                            <div className="space-y-4 text-gray-700">
+                            <div className="space-y-4 text-gray-700 dark:text-gray-300">
                                 <div>
                                     <h5 className="font-bold text-lg mb-2 text-[--accent-green] flex items-center gap-2">
                                         <Icon name="smartphone" />
@@ -613,7 +618,7 @@
                                         <li>أدخل اسم التطبيق ثم اضغط "إضافة" (Add).</li>
                                     </ul>
                                 </div>
-                                <div className="border-t pt-4">
+                                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                                     <h5 className="font-bold text-lg mb-2 text-[--accent-green] flex items-center gap-2">
                                         <Icon name="laptop" />
                                         <span>على اللابتوب</span>
@@ -631,7 +636,7 @@
             );
         };
 
-        // LecturesTab Component
+        // LecturesTab Component Data
         const graduationProjectDetails = [
             {
                 title: "المتطلبات الأساسية للمشروع (يعتمد بشكل أساسي على التطبيق العملي):",
@@ -962,7 +967,7 @@
             );
         };
 
-        // TasksTab Component
+        // TasksTab Component Data
         const tasksData = [
             { 
                 title: "تاسكات الأسبوع 1: مقدمة لعالم الذكاء الاصطناعي", 
@@ -2112,7 +2117,7 @@
                     { title: "وكلاء الذكاء الاصطناعي والبرمجة المستقلة:", text: "استخدم وكلاء الذكاء الاصطناعي (AI Agents) أو Claude Code لبناء وتعديل التطبيقات بشكل شبه مستقل وبصلاحيات متقدمة." }
                 ],
                 toolsList: ["Gemini Canvas", "ChatGPT Canvas", "GitHub", "Google AI Studio", "Claude Code", "AI Agents"],
-                targetCategory: "وكلاء الذكاء الاصطناعي",
+                targetCategory: "Vibe Coding",
                 assistantsGroups: [
                     {
                         title: "للمواقع والتطبيقات (Web/App Mood):",
@@ -2131,7 +2136,7 @@
             },
             {
                 id: "w13",
-                title: "14. مسار العلامة الشخصية والتسويق (Personal Branding)",
+                title: "16. مسار العلامة الشخصية والتسويق (Personal Branding)",
                 icon: "award",
                 needs: [
                     "هل تريد بناء هويتك الشخصية ووضع خطة لتسويق مهاراتك بشكل احترافي؟",
